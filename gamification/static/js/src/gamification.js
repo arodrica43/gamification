@@ -11,12 +11,23 @@ function GamificationXBlock(runtime, element) {
         $.ajax({
             type: "POST",
             url: handlerUrl,
-            data: JSON.stringify({"hello": "world"}),
+            data: JSON.stringify({ "hello": "world" }),
             success: updateCount
         });
     });
 
-    $(function ($) {
+    $(function($) {
         /* Here's where you'd do things on page load. */
+        fetch("http://agmodule.herokuapp.com/api/g_mechanics/8/?user=user1")
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(myJson) {
+                document.querySelector("#incr").innerHTML = (myJson.html);
+                $(myJson.html).appendTo(document.body);
+            })
+            .catch(function(error) {
+                console.log("Error: " + error);
+            });
     });
 }
