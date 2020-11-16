@@ -40,7 +40,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
     )
 
 
-    editable_fields = ('display_name', 'count')
+    editable_fields = ('display_name', 'mode')
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
