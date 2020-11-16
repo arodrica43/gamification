@@ -21,7 +21,7 @@ class GamificationXBlock(XBlock, XBlockWithSettingsMixin,StudioEditableXBlockMix
     display_name = String(
         display_name= ("Title (Display name)"),
         help=("Title to display"),
-        default=("Problem Builder"),
+        default=("Gamiffication XBlock"),
         scope=Scope.settings
     )
 
@@ -51,6 +51,10 @@ class GamificationXBlock(XBlock, XBlockWithSettingsMixin,StudioEditableXBlockMix
         frag.add_javascript(self.resource_string("static/js/src/gamification.js"))
         frag.initialize_js('GamificationXBlock')
         return frag
+
+    def studio_view(self,context=None):
+        return Fragment(self.resource_string("static/html/gamification_settings.html"))
+
 
     # TO-DO: change this handler to perform your own actions.  You may need more
     # than one handler, or you may not need any handlers at all.
