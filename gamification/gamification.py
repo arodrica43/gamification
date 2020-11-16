@@ -38,6 +38,17 @@ class GamificationXBlock(XBlock):
         frag.initialize_js('GamificationXBlock')
         return frag
 
+    def author_view(self, context=None):
+        """ Studio View """
+        # Warn the user that this block will only work from the LMS. (Since the CMS uses
+        # different celery queues; our task listener is waiting for tasks on the LMS queue)
+        return Fragment(u'<p>Author View :: Instructor Tool Block</p><p>This block only works from the LMS.</p>')
+
+    def studio_view(self, context=None):
+        """ View for editing Instructor Tool block in Studio. """
+        # Display friendly message explaining that the block is not editable.
+        return Fragment(u'<p>Studio View :: This is a preconfigured block. It is not editable.</p>')
+
     # TO-DO: change this handler to perform your own actions.  You may need more
     # than one handler, or you may not need any handlers at all.
     @XBlock.json_handler
