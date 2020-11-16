@@ -3,10 +3,12 @@
 import pkg_resources
 from web_fragments.fragment import Fragment
 from xblock.core import XBlock
-from xblock.fields import Integer, Scope
+from xblockutils.studio_editable import StudioEditableXBlockMixin
+from xblockutils.settings import XBlockWithSettingsMixin
+from xblock.fields import Integer, Scope, String
 
 
-class GamificationXBlock(XBlock):
+class GamificationXBlock(XBlock, XBlockWithSettingsMixin,StudioEditableXBlockMixin):
     """
     TO-DO: document what your XBlock does.
     """
@@ -15,10 +17,22 @@ class GamificationXBlock(XBlock):
     # self.<fieldname>.
 
     # TO-DO: delete count, and define your own fields.
+     # Settings
+    display_name = String(
+        display_name= ("Title (Display name)"),
+        help=("Title to display"),
+        default=("Problem Builder"),
+        scope=Scope.settings
+    )
+
     count = Integer(
-        default=0, scope=Scope.user_state,
+        default=0, 
+        scope=Scope.user_state,
         help="A simple counter, to show something happening",
     )
+
+
+    editable_fields = ('display_name', 'count')
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
@@ -37,17 +51,6 @@ class GamificationXBlock(XBlock):
         frag.add_javascript(self.resource_string("static/js/src/gamification.js"))
         frag.initialize_js('GamificationXBlock')
         return frag
-
-    def author_view(self, context=None):
-        """ Studio View """
-        # Warn the user that this block will only work from the LMS. (Since the CMS uses
-        # different celery queues; our task listener is waiting for tasks on the LMS queue)
-        return Fragment(u'<p>Author View :: Instructor Tool Block</p><p>This block only works from the LMS.</p>')
-
-    def studio_view(self, context=None):
-        """ View for editing Instructor Tool block in Studio. """
-        # Display friendly message explaining that the block is not editable.
-        return Fragment(u'<p>Studio View :: This is a preconfigured block. It is not editable.</p>')
 
     # TO-DO: change this handler to perform your own actions.  You may need more
     # than one handler, or you may not need any handlers at all.
