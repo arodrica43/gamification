@@ -8,7 +8,7 @@ from xblockutils.settings import XBlockWithSettingsMixin
 from xblock.fields import Integer, Scope, String
 
 
-class GamificationXBlock(XBlock, XBlockWithSettingsMixin,StudioEditableXBlockMixin):
+class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
     """
     TO-DO: document what your XBlock does.
     """
@@ -23,6 +23,14 @@ class GamificationXBlock(XBlock, XBlockWithSettingsMixin,StudioEditableXBlockMix
         help=("Title to display"),
         default=("Gamiffication XBlock"),
         scope=Scope.settings
+    )
+
+    mode = String(
+        display_name="Mode",
+        help="Determines the behaviour of this component. Standard is recommended.",
+        default='standard',
+        scope=Scope.content,
+        values=('standard', 'crazy')
     )
 
     count = Integer(
@@ -51,10 +59,6 @@ class GamificationXBlock(XBlock, XBlockWithSettingsMixin,StudioEditableXBlockMix
         frag.add_javascript(self.resource_string("static/js/src/gamification.js"))
         frag.initialize_js('GamificationXBlock')
         return frag
-
-    def studio_view(self,context=None):
-        return Fragment(self.resource_string("static/html/gamification_settings.html"))
-
 
     # TO-DO: change this handler to perform your own actions.  You may need more
     # than one handler, or you may not need any handlers at all.
