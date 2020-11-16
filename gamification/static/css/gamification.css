@@ -1,0 +1,9 @@
+/* CSS for GamificationXBlock */
+
+.gamification_block .count {
+    font-weight: bold;
+}
+
+.gamification_block p {
+    cursor: pointer;
+}
