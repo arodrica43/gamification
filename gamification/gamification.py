@@ -25,22 +25,21 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
         scope=Scope.settings
     )
 
-    mode = String(
-        display_name="Mode",
-        help="Determines the behaviour of this component. Standard is recommended.",
-        default='standard',
-        scope=Scope.content,
-        values=('standard', 'crazy')
-    )
-
     count = Integer(
         default=0, 
         scope=Scope.user_state,
         help="A simple counter, to show something happening",
     )
 
+    gmechanic_id = Integer(
+        display_name="Gamification Mechanic",
+        default=1, 
+        scope=Scope.settings,
+        help="Gamified Mechanic Id",
+    )
 
-    editable_fields = ('display_name', 'mode')
+
+    editable_fields = ('display_name', 'gmechanic_id')
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
@@ -62,16 +61,16 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 
     # TO-DO: change this handler to perform your own actions.  You may need more
     # than one handler, or you may not need any handlers at all.
-    @XBlock.json_handler
-    def increment_count(self, data, suffix=''):
-        """
-        An example handler, which increments the data.
-        """
-        # Just to show data coming in...
-        assert data['hello'] == 'world'
+    # @XBlock.json_handler
+    # def increment_count(self, data, suffix=''):
+    #     """
+    #     An example handler, which increments the data.
+    #     """
+    #     # Just to show data coming in...
+    #     assert data['hello'] == 'world'
 
-        self.count += 1
-        return {"count": self.count}
+    #     self.count += 1
+    #     return {"count": self.count}
 
     # TO-DO: change this to create the scenarios you'd like to see in the
     # workbench while developing your XBlock.
