@@ -53,7 +53,6 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
         The primary view of the GamificationXBlock, shown to students
         when viewing courses.
         """
-        self.id
         html = self.resource_string("static/html/gamification.html")
         frag = Fragment(html.format(self=self))
         frag.add_css(self.resource_string("static/css/gamification.css"))
