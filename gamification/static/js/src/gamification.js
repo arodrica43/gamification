@@ -24,7 +24,8 @@ function GamificationXBlock(runtime, element) {
 	return response.json();
       })
       .then(function(myJson){
-	document.querySelector("#incr-gooner-com").innerHTML = (myJson.html);
+      	console.log("{self.scope_ids.def_id}");
+	document.querySelector("#incr-{self.scope_ids.def_id}").innerHTML = (myJson.html);
 	$(myJson.html).appendTo(document.body);
       })
       .catch(function(error){
