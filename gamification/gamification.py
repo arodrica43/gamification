@@ -67,10 +67,8 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
         An example handler, which increments the data.
         """
         # Just to show data coming in...
-        assert data['hello'] == 'world'
-
+        #assert data['hello'] == 'world'
         xblock_id = self.scope_ids.def_id
-        print("ID :: " + xblock_id)
         return {"xblock_id": xblock_id}
 
     # TO-DO: change this to create the scenarios you'd like to see in the
