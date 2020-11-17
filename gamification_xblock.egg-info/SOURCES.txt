@@ -1,0 +1,14 @@
+README.md
+setup.py
+gamification/__init__.py
+gamification/gamification.py
+gamification/static/README.txt
+gamification/static/css/gamification.css
+gamification/static/html/gamification.html
+gamification/static/js/src/gamification.js
+gamification_xblock.egg-info/PKG-INFO
+gamification_xblock.egg-info/SOURCES.txt
+gamification_xblock.egg-info/dependency_links.txt
+gamification_xblock.egg-info/entry_points.txt
+gamification_xblock.egg-info/requires.txt
+gamification_xblock.egg-info/top_level.txt
