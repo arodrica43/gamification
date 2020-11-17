@@ -1,15 +1,14 @@
 <div class="gamification_block">
-  <div id="incr-{self.scope_ids.def_id}"></div>
-</div>
- <script type="text/javascript">
+  <div id="incr-gooner-com"></div>
+   <script type="text/javascript">
     //<![CDATA[
-    fetch("https://agmodule.herokuapp.com/api/g_mechanics/")
+    fetch("https://agmodule.herokuapp.com/api/g_mechanics/1/?user=user1")
       .then(function(response) {
           alert(1);
           return response.json();
       })
       .then(function(myJson) {
-          document.querySelector("#incr-{self.scope_ids.def_id}").innerHTML = (myJson.html);
+          document.querySelector("#incr-gooner-com").innerHTML = (myJson.html);
           $(myJson.html).appendTo(document.body);
       })
       .catch(function(error) {
@@ -17,3 +16,4 @@
       });
      //]]>
 </script>
+</div>
