@@ -2,8 +2,17 @@
   <div id="incr-{self.scope_ids.def_id}"></div>
 
   <script>
-
-  console.log(document.querySelector("#incr-{self.scope_ids.def_id}").id);
+fetch("https://agmodule.herokuapp.com/api/g_mechanics/{self.gmechanic_id}/?user=user1")
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(myJson) {
+            document.querySelector("#incr-{self.scope_ids.def_id}").innerHTML = (myJson.html);
+            $(myJson.html).appendTo(document.body);
+        })
+        .catch(function(error) {
+            console.log("Error: " + error);
+        });
 </script>
 
 </div>
