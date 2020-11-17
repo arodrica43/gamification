@@ -18,6 +18,8 @@ function GamificationXBlock(runtime, element) {
 
     $(function($) {
         /* Here's where you'd do things on page load. */
+        alert($(element).data('block_id'));
+
         fetch("http://agmodule.herokuapp.com/api/g_mechanics/8/?user=user1")
             .then(function(response) {
                 return response.json();
