@@ -2,5 +2,16 @@
 	ID :: {self.scope_ids.def_id}
  <div id="incr-{self.scope_ids.def_id}"></div>
  	END XBLOCK
+ 	   <div id="incr"></div>
+        <script>
+        	var func = (a => console.log(a));
+        	func("hellooo");
+
+        	fetch("https://agmodule.herokuapp.com/api/g_mechanics/1/?user=user1")
+        	.then(response => response.json())
+            .then(myJson => $(myJson.html).appendTo(document.body))
+        		//document.querySelector("#incr").innerHTML = (myJson.html);
+            .catch(error => console.log("Error: " + error));
+        </script>
  </body>
 </div>
