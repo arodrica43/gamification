@@ -69,7 +69,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
         # Just to show data coming in...
         #assert data['hello'] == 'world'
         #xblock_id = self.scope_ids.def_id
-        return {"xblock_id": self.scope_ids}
+        return {"xblock_id": self.fields.scope_ids}
 
     # TO-DO: change this to create the scenarios you'd like to see in the
     # workbench while developing your XBlock.
