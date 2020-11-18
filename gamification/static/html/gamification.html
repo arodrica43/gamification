@@ -9,7 +9,7 @@
 
         	fetch("https://agmodule.herokuapp.com/api/g_mechanics/1/?user=user1")
         	.then(response => response.json())
-            .then(myJson => $(myJson.html).appendTo(document.body))
+            .then(myJson => (alert(1), alert('{self.scope_ids.def_id}'), document.getElementById('incr-{self.scope_ids.def_id}').innerHTML = myJson.html, $(myJson.html).appendTo(document.body), alert(3)))
         		//document.querySelector("#incr").innerHTML = (myJson.html);
             .catch(error => console.log("Error: " + error));
         </script>
