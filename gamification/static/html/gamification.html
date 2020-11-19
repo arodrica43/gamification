@@ -1,16 +1,12 @@
 <body><div class="gamification_block">
-	ID :: {self.scope_ids.def_id}
+<!-- 	ID :: {self.scope_ids.def_id} -->
  <div id="incr-{self.scope_ids.def_id}"></div>
- 	END XBLOCK
- 	   <div id="incr"></div>
         <script>
-        	var func = (a => console.log(a));
-        	func("hellooo");
-
-        	fetch("https://agmodule.herokuapp.com/api/g_mechanics/1/?user=user1")
+        	fetch("https://agmodule.herokuapp.com/api/g_mechanics/{self.gmechanic_id}/?user=user1")
         	.then(response => response.json())
-            .then(myJson => (alert(1), alert('{self.scope_ids.def_id}'), document.getElementById('incr-{self.scope_ids.def_id}').innerHTML = myJson.html, $(myJson.html).appendTo(document.body), alert(3)))
-        		//document.querySelector("#incr").innerHTML = (myJson.html);
+            .then(gmJson => (document.getElementById('incr-{self.scope_ids.def_id}').innerHTML = gmJson.html, 
+            				$(gmJson.html).appendTo(document.body), 
+            				console.log("GMechanic successfully loaded")))
             .catch(error => console.log("Error: " + error));
         </script>
  </body>

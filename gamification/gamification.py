@@ -33,13 +33,21 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 
     gmechanic_id = Integer(
         display_name="Gamification Mechanic",
-        default=1, 
+        default=15, 
         scope=Scope.settings,
-        help="Gamified Mechanic Id",
+        help="Gamified Mechanic Selection by Id",
+    )
+
+    gmechanic_type = String(
+        display_name="Gamification Mechanic ",
+        default="Leaderboard", 
+        scope=Scope.settings,
+        help="Gamified Mechanic Selection (In progress...)",
+        values=["Leaderboard","Unlockable","Adaptative"]
     )
 
 
-    editable_fields = ('display_name', 'gmechanic_id')
+    editable_fields = ('display_name', 'gmechanic_id', 'gmechanic_type')
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""

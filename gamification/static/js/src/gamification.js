@@ -1,9 +1,9 @@
 /* Javascript for GamificationXBlock. */
 function GamificationXBlock(runtime, element) {
 
-    function fillXBlock(result) {
+    //function fillXBlock(result) {
 
-      console.log(result.xblock_id);
+      //console.log(result.xblock_id);
       // fetch("https://agmodule.herokuapp.com/api/g_mechanics/1/?user=user1")
       // .then(function(response){
       //   return response.json();
@@ -19,19 +19,19 @@ function GamificationXBlock(runtime, element) {
       //  console.log("Error: " + error);
       // });
 
-    }
+    //}
 
-    var handlerUrl = runtime.handlerUrl(element, 'get_xblock_data');
+    //var handlerUrl = runtime.handlerUrl(element, 'get_xblock_data');
 
 
     $(function($) {
         /* Here's where you'd do things on page load. */
-        $.ajax({
-            type: "POST",
-            url: handlerUrl,
-            data: JSON.stringify({ "hello": "world" }),
-            success: fillXBlock
-        });
+        // $.ajax({
+        //     type: "POST",
+        //     url: handlerUrl,
+        //     data: JSON.stringify({ "hello": "world" }),
+        //     success: fillXBlock
+        // });
 
     });
 }
