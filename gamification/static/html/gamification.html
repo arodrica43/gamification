@@ -2,6 +2,7 @@
 <!-- 	ID :: {self.scope_ids.def_id} -->
  	<div id="incr-{self.scope_ids.def_id}"></div>
     <script>
+
     	var associations = [
     						["Adaptative", "Badge", "Challenge", "DevelopmentTool", "EasterEgg", "Gift", "GiftOpener", "KnowledgeShare", "Level", "Lottery", "Point", "SocialNetwork", "SocialStatus", "Unlockable", "Leaderboard"],
     					   	['adaptative_widgets','badge_widgets', 'challenge_widgets', 'development_tool_widgets', 'easter_egg_widgets', 'gift_widgets', 'gift_opener_widgets', 'knowledge_share_widgets', 'level_widgets', 'lottery_widgets', 'point_widgets', 'social_network_widgets', 'social_status_widgets', 'unlockable_widgets', 'leaderboard_widgets'],
@@ -24,16 +25,15 @@
 	        .then(mech_list => (ids_list = [],
 	        					mech_list.forEach((item,index) => ids_list.push(item.id)),
 	        					ids_list))
-	        .then(ids_list => ( xblock_id = "{self.scope_ids.def_id}",
-						    	fetch("https://agmodule.herokuapp.com/api/g_mechanics/" + ids_list[Math.floor(Math.random() * ids_list.length)] + "/?user=user2&dynamic_index=" + xblock_id.replace(/\./g, "")) //&dynamic_index={self.scope_ids.def_id} 
+	        .then(ids_list => ( fetch("https://agmodule.herokuapp.com/api/g_mechanics/" + ids_list[Math.floor(Math.random() * ids_list.length)] + "/?user=user2&dynamic_index=" + "{self.scope_ids.def_id}".replace(/[\ \.\&\:]/g, "")) //&dynamic_index={self.scope_ids.def_id} 
 					        	.then(response => response.json())
 					            .then(gmJson => (document.getElementById('incr-{self.scope_ids.def_id}').innerHTML = gmJson.html, 
-					            				$(gmJson.html).appendTo(document.body), 
+					            				$(gmJson.html).appendTo(document.body),
 					            				console.log("GMechanic successfully loaded")))
 					            .catch(error => console.log("Error: " + error))))
 	        .catch(error => console.log("Error: " + error))
 	    else
-	    	fetch("https://agmodule.herokuapp.com/api/g_mechanics/{self.gmechanic_id}/?user=user2&dynamic_index=" + xblock_id) //&dynamic_index={self.scope_ids.def_id}
+	    	fetch("https://agmodule.herokuapp.com/api/g_mechanics/{self.gmechanic_id}/?user=user2&dynamic_index=" + "{self.scope_ids.def_id}".replace(/[\ \.\&\:]/g, "")) //&dynamic_index={self.scope_ids.def_id}
         	.then(response => response.json())
             .then(gmJson => (document.getElementById('incr-{self.scope_ids.def_id}').innerHTML = gmJson.html, 
             				$(gmJson.html).appendTo(document.body), 

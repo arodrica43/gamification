@@ -6,7 +6,8 @@ from xblock.core import XBlock
 from xblockutils.studio_editable import StudioEditableXBlockMixin
 from xblockutils.settings import XBlockWithSettingsMixin
 from xblock.fields import Integer, Scope, String
-
+import threading
+lock = threading.Lock()
 
 class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
     """
@@ -35,7 +36,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 
     gmechanic_type = String(  # Only instantiate widgets
         display_name="Gamification Mechanic Type",
-        default="Adaptative", 
+        default="Leaderboard", 
         scope=Scope.settings,
         help="Gamified Mechanic Selection by Type (If Id = 0, this field is omitted)",
         values=["Adaptative", "Badge", "Challenge", "DevelopmentTool", "EasterEgg", "Gift", "GiftOpener", "KnowledgeShare", "Level", "Lottery", "Point", "SocialNetwork", "SocialStatus", "Unlockable", "Leaderboard"]
@@ -43,7 +44,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 
     gmechanic_id = Integer(
         display_name="Gamification Mechanic Id",
-        default=0, 
+        default=180, 
         scope=Scope.settings,
         help="Gamified Mechanic Selection by Id (If Id = 0, the mechanic is selected by its Size and Type)",
     )
@@ -61,12 +62,18 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
         The primary view of the GamificationXBlock, shown to students
         when viewing courses.
         """
-        html = self.resource_string("static/html/gamification.html")
-        frag = Fragment(html.format(self=self))
-        frag.add_css(self.resource_string("static/css/gamification.css"))
-        frag.add_javascript(self.resource_string("static/js/src/gamification.js"))
-        frag.initialize_js('GamificationXBlock')
-        return frag
+        lock.acquire()
+        try:
+            html = self.resource_string("static/html/gamification.html")
+            frag = Fragment(html.format(self=self))
+            frag.add_css(self.resource_string("static/css/gamification.css"))
+            frag.add_javascript(self.resource_string("static/js/src/gamification.js"))
+            frag.initialize_js('GamificationXBlock')
+            lock.release()
+            return frag
+        except:
+            lock.release()
+            raise Exception("Error loading student view")
 
     # TO-DO: change this handler to perform your own actions.  You may need more
     # than one handler, or you may not need any handlers at all.
@@ -92,6 +99,9 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
              """),
             ("Multiple GamificationXBlock",
              """<vertical_demo>
+                <gamification/>
+                <gamification/>
+                <gamification/>
                 <gamification/>
                 <gamification/>
                 <gamification/>
