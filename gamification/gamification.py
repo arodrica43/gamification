@@ -44,7 +44,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 
     gmechanic_id = Integer(
         display_name="Gamification Mechanic Id",
-        default=180, 
+        default=0, 
         scope=Scope.settings,
         help="Gamified Mechanic Selection by Id (If Id = 0, the mechanic is selected by its Size and Type)",
     )
