@@ -64,7 +64,13 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
         """
         lock.acquire()
         try:
-            html = self.resource_string("static/html/gamification.html")
+            if self.gmechanic_id == 0:
+                if self.gmechanic_type == "Adaptative" and self.gmechanic_size == "Widget":
+                    html = self.resource_string("static/html/adaptative_gamification_widget.html")
+                else:
+                    html = self.resource_string("static/html/base_gamification.html")
+            else:
+                html = self.resource_string("static/html/gamification_by_id.html")
             frag = Fragment(html.format(self=self))
             frag.add_css(self.resource_string("static/css/gamification.css"))
             frag.add_javascript(self.resource_string("static/js/src/gamification.js"))
