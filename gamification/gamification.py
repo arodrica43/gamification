@@ -36,7 +36,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 
     gmechanic_type = String(  # Only instantiate widgets
         display_name="Gamification Mechanic Type",
-        default="Leaderboard", 
+        default="Adaptative", 
         scope=Scope.settings,
         help="Gamified Mechanic Selection by Type (If Id = 0, this field is omitted)",
         values=["Adaptative", "Badge", "Challenge", "DevelopmentTool", "EasterEgg", "Gift", "GiftOpener", "KnowledgeShare", "Level", "Lottery", "Point", "SocialNetwork", "SocialStatus", "Unlockable", "Leaderboard"]
