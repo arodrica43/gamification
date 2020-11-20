@@ -7,8 +7,6 @@ from xblockutils.studio_editable import StudioEditableXBlockMixin
 from xblockutils.settings import XBlockWithSettingsMixin
 from xblock.fields import Integer, Scope, String, Boolean
 import threading
-import requests
-import json
 lock = threading.Lock()
 
 class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
@@ -51,47 +49,12 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
         help="Gamified Mechanic Selection by Id (If Id = 0, the mechanic is selected by its Size and Type)",
     )
 
-    adaptation_mode = String(  # Only instantiate widgets
-        display_name="Adaptative Gamification Mode",
-        default="Static", 
-        scope=Scope.settings,
-        help="Control if an adaptative mechanics change on refresh. \nThis field is used only when Gamification Mechanic Type is 'Adaptative'",
-        values=["Dynamic","Static"]
-    )
-
-    adaptation_static_id = Integer(
-        display_name="Adaptative Id",
-        default=0, 
-        scope=Scope.settings,
-        help="Id of the static adaptative mechanic",
-    )
-
-    adaptation_static_selected = Boolean(
-        display_name="Static Adaptative Mechanic Done",
-        default=False, 
-        scope=Scope.user_state,
-        help="Determines if the Adaptative Id is given or not",
-    )
-
-    editable_fields = ('display_name', 'gmechanic_size','gmechanic_type', 'gmechanic_id', 'adaptation_mode')
+    editable_fields = ('display_name', 'gmechanic_size','gmechanic_type', 'gmechanic_id')
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
         data = pkg_resources.resource_string(__name__, path)
         return data.decode("utf8")
-
-    def request_adaptative_id(self,count=0, attempts = 10):
-    	try:
-    		r = requests.get("https://agmodule.herokuapp.com/api/g_mechancis/retrieve_adaptative_widget_id?user=user2")
-    		if r.status_code != 200: raise Exception("Request Error")
-    		res = json.loads(r.content)['gmechanic_id']
-    		print("Selected Mechanic:", res)
-    		return res
-    	except:
-    		if count < attempts:
-    			self.request_adaptative_id(count+1)
-    		else:
-    			return 0
 
     # TO-DO: change this view to display your data your own way.
     def student_view(self, context=None):
@@ -103,19 +66,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
         try:
             if self.gmechanic_id == 0:
                 if self.gmechanic_type == "Adaptative" and self.gmechanic_size == "Widget":
-                	if self.adaptation_mode == "Dynamic":
-                		html = self.resource_string("static/html/adaptative_gamification_widget.html")
-                	else:
-                		if not self.adaptation_static_selected:
-	                		rid = self.request_adaptative_id()
-	                		if rid:
-	                			self.adaptation_static_id = rid
-	                			self.adaptation_static_selected = True
-	                			html = self.resource_string("static/html/adaptative_gamification_widget_by_id.html")
-	                		else:
-	                			html = self.resource_string("static/html/adaptative_gamification_widget.html")
-	                	else:
-	                		html = self.resource_string("static/html/adaptative_gamification_widget_by_id.html")
+                	html = self.resource_string("static/html/adaptative_gamification_widget.html")
                 else:
                     html = self.resource_string("static/html/base_gamification.html")
             else:
