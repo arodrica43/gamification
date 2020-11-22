@@ -27,10 +27,10 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
     )
 
     gmechanic_size = String(  # Only instantiate widgets
-        display_name="Gamification Mechanic Size",
+        display_name="Gamification Mechanic Format",
         default="Widget", 
         scope=Scope.settings,
-        help="Gamified Mechanic Size modality Selection (If Id = 0, this field is omitted)",
+        help="Gamified Mechanic Format modality Selection (If Id = 0, this field is omitted)",
         values=["Widget","Full"]
     )
 
@@ -46,7 +46,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
         display_name="Gamification Mechanic Id",
         default=0, 
         scope=Scope.settings,
-        help="Gamified Mechanic Selection by Id (If Id = 0, the mechanic is selected by its Size and Type)",
+        help="Gamified Mechanic Selection by Id (If Id = 0, the mechanic is selected by its Type and)",
     )
 
     editable_fields = ('display_name', 'gmechanic_size','gmechanic_type', 'gmechanic_id')
