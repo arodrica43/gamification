@@ -3,6 +3,7 @@
 	<!-- ID1 :: {self.scope_ids.usage_id}
 	ID2 :: {self.scope_ids.def_id} -->
  	<div id="incr-{self.scope_ids.def_id}"></div>
+    <param id="id_tmp_arg" value="{self.scope_ids.def_id}"></param>
     <script>
         fetch("https://agmodule.herokuapp.com/api/g_mechancis/retrieve_adaptative_widget_id?user=user2")
         .then(response => response.json())
