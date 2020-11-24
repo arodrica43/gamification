@@ -4,10 +4,7 @@ import pkg_resources
 from web_fragments.fragment import Fragment
 from xblock.core import XBlock
 from xblockutils.studio_editable import StudioEditableXBlockMixin
-from xblockutils.settings import XBlockWithSettingsMixin
-from xblock.fields import Integer, Scope, String, Boolean
-import threading
-lock = threading.Lock()
+from xblock.fields import Integer, Scope, String
 
 class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
     """
@@ -70,11 +67,6 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
         return data.decode("utf8")
 
     def student_view(self, context=None):
-        """
-        The main view of the GamificationXBlock, shown to students
-        when viewing courses, and to teachers when designing (by default).
-        """
-        #lock.acquire()
         try:
         	html =  self.resource_string("static/html/gamification.html")
         	frag = Fragment(html.format(self=self))
@@ -96,13 +88,11 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
     	else:
     		self.adaptative_id = 0
     		to_send = data['adaptative_mech_id']
-
     	return {"mech_id": self.gmechanic_id,
     			"mech_type" : self.gmechanic_type, 
     			"mech_size": self.gmechanic_size, 
     			"adaptative_mode": self.adaptative_mode, 
     			"adaptative_mech_id" : to_send}
-
 
     @staticmethod
     def workbench_scenarios():
@@ -113,9 +103,6 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
              """),
             ("Multiple GamificationXBlock",
              """<vertical_demo>
-                <gamification/>
-                <gamification/>
-                <gamification/>
                 <gamification/>
                 <gamification/>
                 <gamification/>

@@ -7,8 +7,6 @@ function GamificationXBlock(runtime, element) {
                         ['adaptatives','badges', 'challenges', 'development_tools', 'easter_eggs', 'gifts', 'gift_openers', 'knowledge_shares', 'levels', 'lotteries', 'points', 'social_networks', 'social_statuses', 'unlockables', 'leaderboards']
                        ];
 
-    var handlerUrl = runtime.handlerUrl(element, 'set_xblock_content');
-
     function post_success(result){
       console.log(result["mech_id"]);
       var mech_id = result["mech_id"];
@@ -28,11 +26,8 @@ function GamificationXBlock(runtime, element) {
           var gmech = "";
           for(var i = 0; i < associations[0].length; i++){
             if(mech_type == associations[0][i]){
-              if(mech_size == "Widget"){
-                gmech = associations[1][i];
-              }else{
-                gmech = associations[2][i];
-              }
+              if(mech_size == "Widget"){ gmech = associations[1][i]; }
+              else{ gmech = associations[2][i]; }
             }
           }
           fetch("https://agmodule.herokuapp.com/api/" + gmech + "/")
@@ -43,8 +38,7 @@ function GamificationXBlock(runtime, element) {
                     ids_list))
           .then(ids_list => ( fetch("https://agmodule.herokuapp.com/api/g_mechanics/" + ids_list[Math.floor(Math.random() * ids_list.length)] + "/?user=user2&dynamic_index=" +  $("#local-id-param", element)[0].value.replace(/[\s\.\&\:\+\@]/g, "")) //&dynamic_index={self.scope_ids.def_id} 
                     .then(response => response.json())
-                    .then(gmJson => ($('#main-embedded-content', element)[0].innerHTML = gmJson.html, 
-                            $(gmJson.html).appendTo(element),
+                    .then(gmJson => ($(gmJson.html).appendTo(element), // first you can do $('#main-embedded-content', element)[0].innerHTML = gmJson.html, 
                             console.log("GMechanic successfully loaded")))
                     .catch(error => console.log("Error: " + error))))
           .catch(error => console.log("Error: " + error))    
@@ -52,21 +46,22 @@ function GamificationXBlock(runtime, element) {
       }else{
         fetch("https://agmodule.herokuapp.com/api/g_mechanics/" + mech_id + "/?user=user2&dynamic_index=" + $("#local-id-param", element)[0].value.replace(/[\s\.\&\:\+\@]/g, "")) //&dynamic_index={self.scope_ids.def_id} 
         .then(response => response.json())
-        .then(gmJson => ($('#main-embedded-content', element)[0].innerHTML = gmJson.html, 
-                        $(gmJson.html).appendTo(element),
+        .then(gmJson => ($(gmJson.html).appendTo(element),
                         console.log("GMechanic successfully loaded")))
         .catch(error => console.log("Error: " + error));
         console.log("POST done successfully!");
     }
   }
 
+  var handlerUrl = runtime.handlerUrl(element, 'set_xblock_content');
+
   function set_xblock_content(k){
-     $.ajax({
-          type: "POST",
-          url: handlerUrl,
-          data: JSON.stringify({ "adaptative_mech_id": k }),
-          success: post_success
-      });
+   $.ajax({
+        type: "POST",
+        url: handlerUrl,
+        data: JSON.stringify({ "adaptative_mech_id": k }),
+        success: post_success
+    });
   }
 
   $(function($) {
