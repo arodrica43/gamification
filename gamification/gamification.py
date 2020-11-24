@@ -82,9 +82,12 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
         try:
             if self.gmechanic_id == 0:
                 if self.gmechanic_type == "Adaptative" and self.gmechanic_size == "Widget":
-                	html = self.resource_string("static/html/adaptative_gamification_widget.html")
+                	if self.adaptative_mode == "Static":
+	                	html = self.resource_string("static/html/adaptative_gamification_widget.html")
+	                else:
+	                    html = self.resource_string("static/html/adaptative_gamification_dynamic_widget.html")
                 else:
-                    html = self.resource_string("static/html/base_gamification.html")
+                        html = self.resource_string("static/html/base_gamification.html")
             else:
                 html = self.resource_string("static/html/gamification_by_id.html")
             frag = Fragment(html.format(self=self))
