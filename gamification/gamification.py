@@ -91,9 +91,12 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
             frag.add_css(self.resource_string("static/css/gamification.css"))
             if self.gmechanic_id == 0:
                 if self.gmechanic_type == "Adaptative" and self.gmechanic_size == "Widget":
-                    frag.add_javascript(self.resource_string("static/js/src/adaptative_widget.js"))
+                	if self.adaptative_mode == "Static":
+                		frag.add_javascript(self.resource_string("static/js/src/adaptative_widget.js"))
+                	else:
+                		frag.add_javascript(self.resource_string("static/js/src/gamification.js"))
                 else:
-                    frag.add_javascript(self.resource_string("static/js/src/gamification.js"))
+                	frag.add_javascript(self.resource_string("static/js/src/gamification.js"))
             else:
                 frag.add_javascript(self.resource_string("static/js/src/gamification.js"))
             frag.initialize_js('GamificationXBlock')
