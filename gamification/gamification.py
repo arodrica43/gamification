@@ -107,6 +107,10 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
     	return {"mech_id" : self.adaptative_id}
 
     @XBlock.json_handler
+    def set_dynamic_id(self, data, suffix=''):
+    	return data
+
+    @XBlock.json_handler
     def get_gmechanic_id(self,data, suffix=''):
     	return {"mech_id" : self.gmechanic_id}
 
