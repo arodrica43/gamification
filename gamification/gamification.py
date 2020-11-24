@@ -84,24 +84,20 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
                 if self.gmechanic_type == "Adaptative" and self.gmechanic_size == "Widget":
                 	if self.adaptative_mode == "Static":
 	                	html = self.resource_string("static/html/adaptative_gamification_widget.html")
+	                	js = self.resource_string("static/js/src/adaptative_widget.js")
 	                else:
 	                    html = self.resource_string("static/html/adaptative_gamification_dynamic_widget.html")
+	                    js = self.resource_string("static/js/src/gamification.js")
                 else:
-                        html = self.resource_string("static/html/base_gamification.html")
+                    html = self.resource_string("static/html/base_gamification.html")
+                    js = self.resource_string("static/js/src/gamification.js")
             else:
                 html = self.resource_string("static/html/gamification_by_id.html")
+                js = self.resource_string("static/js/src/gamification.js")
+            
             frag = Fragment(html.format(self=self))
             frag.add_css(self.resource_string("static/css/gamification.css"))
-            if self.gmechanic_id == 0:
-                if self.gmechanic_type == "Adaptative" and self.gmechanic_size == "Widget":
-                	if self.adaptative_mode == "Static":
-                		frag.add_javascript(self.resource_string("static/js/src/adaptative_widget.js"))
-                	else:
-                		frag.add_javascript(self.resource_string("static/js/src/gamification.js"))
-                else:
-                	frag.add_javascript(self.resource_string("static/js/src/gamification.js"))
-            else:
-                frag.add_javascript(self.resource_string("static/js/src/gamification.js"))
+            frag.add_javascript(js)
             frag.initialize_js('GamificationXBlock')
             lock.release()
             return frag
