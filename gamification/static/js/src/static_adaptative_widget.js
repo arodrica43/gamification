@@ -1,7 +1,7 @@
 /* Javascript for GamificationXBlock. */
 function GamificationXBlock(runtime, element) {
 
-    var handlerUrl = runtime.handlerUrl(element, 'set_adaptative_id');
+    var handlerUrl = runtime.handlerUrl(element, 'set_xblock_content');
 
     function post_success(result){
       console.log(result["mech_id"])
@@ -13,11 +13,11 @@ function GamificationXBlock(runtime, element) {
       console.log("POST done successfully!")
     }
 
-    function set_adaptative_id(k){
+    function set_xblock_content(k){
        $.ajax({
             type: "POST",
             url: handlerUrl,
-            data: JSON.stringify({ "index": k }),
+            data: JSON.stringify({ "adaptative_mech_id": k }),
             success: post_success
         });
     }
@@ -26,7 +26,7 @@ function GamificationXBlock(runtime, element) {
       fetch("https://agmodule.herokuapp.com/api/g_mechancis/retrieve_adaptative_widget_id?user=user2")
       .then(response => response.json())
       .then(gmJson => (gmJson.gmechanic_id))
-      .then(mech_id => (set_adaptative_id(mech_id)))
+      .then(mech_id => (set_xblock_content(mech_id)))
       .catch(error => console.log("Error: " + error))
     });
 }

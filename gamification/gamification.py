@@ -79,17 +79,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
         	html =  self.resource_string("static/html/gamification.html")
         	frag = Fragment(html.format(self=self))
         	frag.add_css(self.resource_string("static/css/gamification.css"))
-        	if self.gmechanic_id == 0:
-        		if self.gmechanic_type == "Adaptative" and self.gmechanic_size == "Widget":
-        			if self.adaptative_mode == "Static":
-        				js = self.resource_string("static/js/src/static_adaptative_widget.js")
-        			else:
-        				js = self.resource_string("static/js/src/dynamic_adaptative_widget.js")
-        		else:
-        			js = self.resource_string("static/js/src/plain_gmechanic.js")
-        	else:
-        		js = self.resource_string("static/js/src/gmechanic_by_id.js")
-        	frag.add_javascript(js)
+        	frag.add_javascript(self.resource_string("static/js/src/gamification.js"))
         	frag.initialize_js('GamificationXBlock')
         	#lock.release()
         	return frag
@@ -98,25 +88,21 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
             raise e
 
     @XBlock.json_handler
-    def set_adaptative_id(self, data, suffix=''):
+    def set_xblock_content(self, data, suffix=''):
     	if self.adaptative_mode == "Static":
     		if self.adaptative_id == 0:
-    			self.adaptative_id = data['index']
+    			self.adaptative_id = data['adaptative_mech_id']
+    		to_send = self.adaptative_id
     	else:
     		self.adaptative_id = 0
-    	return {"mech_id" : self.adaptative_id}
+    		to_send = data['adaptative_mech_id']
 
-    @XBlock.json_handler
-    def set_dynamic_id(self, data, suffix=''):
-    	return data
+    	return {"mech_id": self.gmechanic_id,
+    			"mech_type" : self.gmechanic_type, 
+    			"mech_size": self.gmechanic_size, 
+    			"adaptative_mode": self.adaptative_mode, 
+    			"adaptative_mech_id" : to_send}
 
-    @XBlock.json_handler
-    def get_gmechanic_id(self,data, suffix=''):
-    	return {"mech_id" : self.gmechanic_id}
-
-    @XBlock.json_handler
-    def get_plain_gmechanic_data(self,data, suffix=''):
-    	return {"mech_type" : self.gmechanic_type, "mech_size": self.gmechanic_size}
 
     @staticmethod
     def workbench_scenarios():
