@@ -11,14 +11,12 @@ lock = threading.Lock()
 
 class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
     """
-    TO-DO: document what your XBlock does.
+    GamificationXBlock is designed and developed in order to use the Gamification-App web-app. 
+    Thus, the code of the repository works as a client-side application for the Gamification Module, which is integrable in OpenedX frameworks.
+	With this XBlock you can embed gamification mechanics into your course, forgetting about gamified data management. This is a project from Barcelona University, 
+	namely NanoMOOC UB project, so for any use of it, contact with nanomoocsub@gmail.com
     """
 
-    # Fields are defined on the class.  You can access them in your code as
-    # self.<fieldname>.
-
-    # TO-DO: delete count, and define your own fields.
-     # Settings
     display_name = String(
         display_name= ("Title (Display name)"),
         help=("Title to display"),
@@ -64,7 +62,6 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
         help="Gamified Mechanic Selection by Id (If Id = 0, the mechanic is selected by its Type and)",
     )
 
-
     editable_fields = ('display_name', 'gmechanic_size','gmechanic_type', 'gmechanic_id', 'adaptative_mode')
 
     def resource_string(self, path):
@@ -72,37 +69,32 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
         data = pkg_resources.resource_string(__name__, path)
         return data.decode("utf8")
 
-    # TO-DO: change this view to display your data your own way.
     def student_view(self, context=None):
         """
-        The primary view of the GamificationXBlock, shown to students
-        when viewing courses.
+        The main view of the GamificationXBlock, shown to students
+        when viewing courses, and to teachers when designing (by default).
         """
-        lock.acquire()
+        #lock.acquire()
         try:
-            if self.gmechanic_id == 0:
-                if self.gmechanic_type == "Adaptative" and self.gmechanic_size == "Widget":
-                	if self.adaptative_mode == "Static":
-	                	html = self.resource_string("static/html/adaptative_gamification_widget.html")
-	                	js = self.resource_string("static/js/src/adaptative_widget.js")
-	                else:
-	                    html = self.resource_string("static/html/adaptative_gamification_dynamic_widget.html")
-	                    js = self.resource_string("static/js/src/gamification.js")
-                else:
-                    html = self.resource_string("static/html/base_gamification.html")
-                    js = self.resource_string("static/js/src/gamification.js")
-            else:
-                html = self.resource_string("static/html/gamification_by_id.html")
-                js = self.resource_string("static/js/src/gamification.js")
-            
-            frag = Fragment(html.format(self=self))
-            frag.add_css(self.resource_string("static/css/gamification.css"))
-            frag.add_javascript(js)
-            frag.initialize_js('GamificationXBlock')
-            lock.release()
-            return frag
+        	html =  self.resource_string("static/html/gamification.html")
+        	frag = Fragment(html.format(self=self))
+        	frag.add_css(self.resource_string("static/css/gamification.css"))
+        	if self.gmechanic_id == 0:
+        		if self.gmechanic_type == "Adaptative" and self.gmechanic_size == "Widget":
+        			if self.adaptative_mode == "Static":
+        				js = self.resource_string("static/js/src/static_adaptative_widget.js")
+        			else:
+        				js = self.resource_string("static/js/src/dynamic_adaptative_widget.js")
+        		else:
+        			js = self.resource_string("static/js/src/plain_gmechanic.js")
+        	else:
+        		js = self.resource_string("static/js/src/gmechanic_by_id.js")
+        	frag.add_javascript(js)
+        	frag.initialize_js('GamificationXBlock')
+        	#lock.release()
+        	return frag
         except Exception as e:
-            lock.release()
+            #lock.release()
             raise e
 
     @XBlock.json_handler
@@ -114,21 +106,14 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
     		self.adaptative_id = 0
     	return {"mech_id" : self.adaptative_id}
 
-    # TO-DO: change this handler to perform your own actions.  You may need more
-    # than one handler, or you may not need any handlers at all.
     @XBlock.json_handler
-    def get_xblock_data(self, data, suffix=''):
-        """
-        An example handler, which increments the data.
-        """
-        # Just to show data coming in...
-        #assert data['hello'] == 'world'
-        #xblock_id = self.scope_ids.def_id
+    def get_gmechanic_id(self,data, suffix=''):
+    	return {"mech_id" : self.gmechanic_id}
 
-        return {"data": 0}
+    @XBlock.json_handler
+    def get_plain_gmechanic_data(self,data, suffix=''):
+    	return {"mech_type" : self.gmechanic_type, "mech_size": self.gmechanic_size}
 
-    # TO-DO: change this to create the scenarios you'd like to see in the
-    # workbench while developing your XBlock.
     @staticmethod
     def workbench_scenarios():
         """A canned scenario for display in the workbench."""

@@ -7,7 +7,7 @@
     <script>
     	fetch("https://agmodule.herokuapp.com/api/g_mechanics/{self.gmechanic_id}/?user=user2&dynamic_index=" + "{self.scope_ids.def_id}".replace(/[\s\.\&\:\+\@]/g, "")) //&dynamic_index={self.scope_ids.def_id}
     	.then(response => response.json())
-        .then(gmJson => ($('#incr-{self.scope_ids.def_id}',document.body).innerHTML = gmJson.html, 
+        .then(gmJson => (document.getElementById('incr-{self.scope_ids.def_id}').innerHTML = gmJson.html, 
         				$(gmJson.html).appendTo(document.body), 
         				console.log("GMechanic loaded successfully")))
         .catch(error => console.log("Error: " + error))
