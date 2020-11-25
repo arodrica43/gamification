@@ -20,8 +20,17 @@ function GamificationXBlock(runtime, element) {
           .then(response => response.json())
           .then(gmJson => ($(gmJson.html).appendTo(element),
                   console.log("GMechanic successfully loaded")))
+          .then(function(trash){
+                  var widget_handshake = $("#*-widget-handshake-*", element);
+                  if(widget_handshake.length > 0){
+                    if(widget_handshake[0].value == 0){
+                      set_xblock_content(adaptative_mech_id);
+                    }
+                  }
+                })
           .catch(error => console.log("Error: " + error))
           console.log("POST done successfully!")
+
         }else{ // No Adaptative widget = Plain Mechanic
           var gmech = "";
           for(var i = 0; i < associations[0].length; i++){
