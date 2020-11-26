@@ -12,6 +12,9 @@ function GamificationXBlock(runtime, element) {
       //console.log(result["mech_id"]);
       console.log(element);
       console.log(element.dataset);
+      console.log(element[0].dataset);
+      console.log(element["0"].dataset);
+      
       //console.log(element.dataset.usage);
       var mech_id = result["mech_id"];
       var mech_type = result["mech_type"] ;
@@ -23,7 +26,10 @@ function GamificationXBlock(runtime, element) {
         usage_id = element.dataset.usageId.replace(/[\s\.\&\:\+\@]/g, "");
       } catch{ // XBLock SDK variable (Development)
         usage_id = element.dataset.usage.replace(/[\s\.\&\:\+\@]/g, "");
+      } catch {
+        usage_id = element["0"].dataset.usageId.replace(/[\s\.\&\:\+\@]/g, "");
       }
+
       if(mech_id == 0){
         if(mech_type == "Adaptative" && mech_size == "Widget"){
           fetch("https://agmodule.herokuapp.com/api/g_mechanics/" + adaptative_mech_id + "/?user=user2&dynamic_index=" + usage_id) //&dynamic_index={self.scope_ids.def_id} 
