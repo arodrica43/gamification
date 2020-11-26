@@ -10,10 +10,10 @@ function GamificationXBlock(runtime, element) {
     function post_success(result){
       //console.log(element.dataset.usage);
       //console.log(result["mech_id"]);
-      console.log(element);
-      console.log(element.dataset);
-      console.log(element[0].dataset);
-      console.log(element["0"].dataset);
+      // console.log(element);
+      // console.log(element.dataset);
+      // console.log(element[0].dataset);
+      // console.log(element["0"].dataset);
       
       //console.log(element.dataset.usage);
       var mech_id = result["mech_id"];
