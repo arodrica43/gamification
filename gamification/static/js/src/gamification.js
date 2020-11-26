@@ -23,12 +23,14 @@ function GamificationXBlock(runtime, element) {
       var adaptative_mech_id = result["adaptative_mech_id"];
       var usage_id;
       try{ // OpenedX variable (Production)
-        usage_id = element.dataset.usageId.replace(/[\s\.\&\:\+\@]/g, "");
-      } catch{ // XBLock SDK variable (Development)
+        try{
+          usage_id = element.dataset.usageId.replace(/[\s\.\&\:\+\@]/g, "");
+        }catch{
+           usage_id = element["0"].dataset.usageId.replace(/[\s\.\&\:\+\@]/g, "");
+        }
+      } catch { // XBLock SDK variable (Development)
         usage_id = element.dataset.usage.replace(/[\s\.\&\:\+\@]/g, "");
-      } catch {
-        usage_id = element["0"].dataset.usageId.replace(/[\s\.\&\:\+\@]/g, "");
-      }
+      } 
 
       if(mech_id == 0){
         if(mech_type == "Adaptative" && mech_size == "Widget"){
