@@ -10,6 +10,8 @@ function GamificationXBlock(runtime, element) {
     function post_success(result){
       //console.log(element.dataset.usage);
       //console.log(result["mech_id"]);
+      console.log(element);
+      console.log(element.dataset);
       var mech_id = result["mech_id"];
       var mech_type = result["mech_type"] ;
       var mech_size = result["mech_size"];
@@ -20,15 +22,6 @@ function GamificationXBlock(runtime, element) {
           fetch("https://agmodule.herokuapp.com/api/g_mechanics/" + adaptative_mech_id + "/?user=user2&dynamic_index=" + element.dataset.usage.replace(/[\s\.\&\:\+\@]/g, "")) //&dynamic_index={self.scope_ids.def_id} 
           .then(response => response.json())
           .then(gmJson => ($(gmJson.html).appendTo(element)))
-          .then(function(trash){
-                  var widget_handshake = $('*[id*=widget-handshake]:visible', element);
-                  if(widget_handshake.length > 0){
-                    if(widget_handshake[0].value == 0){
-                      console.log("Error loading gmechanics script, rerying...");
-                      set_xblock_content(adaptative_mech_id);
-                    }
-                  }
-                })
           .catch(error => console.log("Error: " + error))
         }else{ // No Adaptative widget = Plain Mechanic
           var gmech = "";
