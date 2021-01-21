@@ -1,0 +1,6 @@
+Installation on AWS
+
+1 - Clone repo :: git clone <repo_name>
+2 - Install :: sudo /edx/bin/pip.edxapp install /home/ubuntu/xblock-in-video-quiz
+3 - List :: sudo /edx/bin/pip.edxapp list
+4 - Uninstall :: sudo /edx/bin/pip.edxapp uninstall <xblock_name>
