@@ -22,7 +22,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
     )
 
     difficulty = String(  # Only instantiate widgets
-        display_name="Gamification Mechanic Format",
+        display_name="Difficulty",
         default="easy", 
         scope=Scope.settings,
         help="Difficulty of the previous activity. Used to select the complexity of the mechanic.",
