@@ -78,24 +78,11 @@ function GamificationXBlock(runtime, element) {
     });
   }
 
-  function start_setup(result){
-    fetch("https://agmodule.herokuapp.com/api/g_mechanics/retrieve_adaptative_widget_id?user=user2&difficulty=" + result["difficulty"])
+  $(function($) {
+    fetch("https://agmodule.herokuapp.com/api/g_mechanics/retrieve_adaptative_widget_id?user=user2")
     .then(response => response.json())
     .then(gmJson => (gmJson.gmechanic_id))
     .then(mech_id => (set_xblock_content(mech_id)))
     .catch(error => console.log("Error: " + error))
-  }
-
-  function start_loading(){
-    $.ajax({
-        type: "POST",
-        url: runtime.handlerUrl(element, 'get_difficulty'),
-        data: JSON.stringify({ "data": 0 }),
-        success: start_setup
-    });
-  }
-
-  $(function($) {
-    start_loading();
   });
 }

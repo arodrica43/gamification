@@ -102,9 +102,9 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
     			"adaptative_mode": self.adaptative_mode, 
     			"adaptative_mech_id" : to_send}
 
-    @XBlock.json_handler
-    def get_difficulty(self, data, suffix=''):
-        return {"difficulty": self.difficulty}
+    # @XBlock.json_handler
+    # def get_difficulty(self, data, suffix=''):
+    #     return {"difficulty": self.difficulty}
 
     @staticmethod
     def workbench_scenarios():
