@@ -89,7 +89,7 @@ function GamificationXBlock(runtime, element) {
   function start_loading(){
     $.ajax({
         type: "POST",
-        url: runtime.handlerUrl(element, 'get_difficulty');,
+        url: runtime.handlerUrl(element, 'get_difficulty'),
         data: JSON.stringify({ "data": 0 }),
         success: start_setup
     });
