@@ -21,14 +21,6 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
         scope=Scope.settings
     )
 
-    difficulty = String(  # Only instantiate widgets
-        display_name="Difficulty",
-        default="easy", 
-        scope=Scope.settings,
-        help="Difficulty of the previous activity. Used to select the complexity of the mechanic.",
-        values=["easy","hard"]
-    )
-
     gmechanic_size = String(  # Only instantiate widgets
         display_name="Gamification Mechanic Format",
         default="Widget", 
@@ -101,10 +93,6 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
     			"mech_size": self.gmechanic_size, 
     			"adaptative_mode": self.adaptative_mode, 
     			"adaptative_mech_id" : to_send}
-
-    # @XBlock.json_handler
-    # def get_difficulty(self, data, suffix=''):
-    #     return {"difficulty": self.difficulty}
 
     @staticmethod
     def workbench_scenarios():
