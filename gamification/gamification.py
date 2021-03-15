@@ -108,61 +108,49 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
                 <gamification/>
                 <gamification/>
                 <gamification/>
-                <gamification/>	
-                <gamification/>
-                <gamification/>
-                <gamification/>	
-                <gamification/>
-                <gamification/>
-                <gamification/>	
-                <gamification/>
-                <gamification/>
-                <gamification/>	
                 <gamification/>
                 <gamification/>
                 <gamification/>
                 <gamification/>
                 <gamification/>
-                <gamification/>	
-                <gamification/>
-                <gamification/>
-                <gamification/>	
-                <gamification/>
-                <gamification/>
-                <gamification/>	
-                <gamification/>
-                <gamification/>
-                <gamification/>	
                 <gamification/>
                 <gamification/>
                 <gamification/>
                 <gamification/>
                 <gamification/>
-                <gamification/>	
-                <gamification/>
-                <gamification/>
-                <gamification/>	
-                <gamification/>
-                <gamification/>
-                <gamification/>	
-                <gamification/>
-                <gamification/>
-                <gamification/>	
                 <gamification/>
                 <gamification/>
                 <gamification/>
                 <gamification/>
                 <gamification/>
-                <gamification/>	
                 <gamification/>
                 <gamification/>
-                <gamification/>	
                 <gamification/>
                 <gamification/>
-                <gamification/>	
                 <gamification/>
                 <gamification/>
-                <gamification/>	
+                <gamification/>
+                <gamification/>
+                <gamification/>
+                <gamification/>
+                <gamification/>
+                <gamification/>
+                <gamification/>
+                <gamification/>
+                <gamification/>
+                <gamification/>
+                <gamification/>
+                <gamification/>
+                <gamification/>
+                <gamification/>
+                <gamification/>
+                <gamification/>
+                <gamification/>
+                <gamification/>
+                <gamification/>
+                <gamification/>
+                <gamification/>
+                <gamification/>
                 </vertical_demo>
              """),
         ]
