@@ -21,6 +21,8 @@ function GamificationXBlock(runtime, element) {
       var mech_size = result["mech_size"];
       var adaptative_mode = result["adaptative_mode"];
       var adaptative_mech_id = result["adaptative_mech_id"];
+      var difficulty = result["difficulty"];
+      var dashboard_url = result["dashboard_url"];
       var usage_id;
       try{ // OpenedX variable (Production)
         try{
@@ -34,7 +36,7 @@ function GamificationXBlock(runtime, element) {
 
       if(mech_id == 0){
         if(mech_type == "Adaptative" && mech_size == "Widget"){
-          fetch("https://agmodule.herokuapp.com/api/g_mechanics/" + adaptative_mech_id + "/?user=user2&dynamic_index=" + usage_id) //&dynamic_index={self.scope_ids.def_id} 
+          fetch("https://agmodule.herokuapp.com/api/g_mechanics/" + adaptative_mech_id + "/?user=user2&dynamic_index=" + usage_id + "&dynamic_link_url=" + dashboard_url) //&dynamic_index={self.scope_ids.def_id} 
           .then(response => response.json())
           .then(gmJson => ($(gmJson.html).appendTo(element)))
           .catch(error => console.log("Error: " + error))
@@ -52,7 +54,7 @@ function GamificationXBlock(runtime, element) {
           .then(mech_list => (ids_list = [],
                     mech_list.forEach((item,index) => ids_list.push(item.id)),
                     ids_list))
-          .then(ids_list => ( fetch("https://agmodule.herokuapp.com/api/g_mechanics/" + ids_list[Math.floor(Math.random() * ids_list.length)] + "/?user=user2&dynamic_index=" + usage_id) //&dynamic_index={self.scope_ids.def_id} 
+          .then(ids_list => ( fetch("https://agmodule.herokuapp.com/api/g_mechanics/" + ids_list[Math.floor(Math.random() * ids_list.length)] + "/?user=user2&dynamic_index=" + usage_id + "&dynamic_link_url=" + dashboard_url) //&dynamic_index={self.scope_ids.def_id} 
                     .then(response => response.json())
                     .then(gmJson => ($(gmJson.html).appendTo(element))) // first you can do $('#main-embedded-content', element)[0].innerHTML = gmJson.html, 
                     .catch(error => console.log("Error: " + error))))
@@ -68,6 +70,8 @@ function GamificationXBlock(runtime, element) {
   }
 
   var handlerUrl = runtime.handlerUrl(element, 'set_xblock_content');
+  var handlerUrl2 = runtime.handlerUrl(element, 'init_xblock_content');
+
 
   function set_xblock_content(k){
    $.ajax({
@@ -78,11 +82,26 @@ function GamificationXBlock(runtime, element) {
     });
   }
 
-  $(function($) {
-    fetch("https://agmodule.herokuapp.com/api/g_mechanics/retrieve_adaptative_widget_id?user=user2") // &difficulty=hard
+  function load_xblock_content(result){
+    //read difficulty
+    var diff = result["difficulty"];
+    fetch("https://agmodule.herokuapp.com/api/g_mechanics/retrieve_adaptative_widget_id?user=user2&difficulty=" + diff) // &difficulty=hard
     .then(response => response.json())
     .then(gmJson => (gmJson.gmechanic_id))
     .then(mech_id => (set_xblock_content(mech_id)))
     .catch(error => console.log("Error: " + error))
+  }
+
+  function init_xblock_content(){
+    $.ajax({
+        type: "POST",
+        url: handlerUrl2,
+        data: JSON.stringify({ "fake_data": 0 }),
+        success: load_xblock_content
+    });
+  }
+
+  $(function($) {
+    init_xblock_content();
   });
 }

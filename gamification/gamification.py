@@ -48,7 +48,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
         display_name="Adaptative Gamification Mode",
         default="Static", 
         scope=Scope.settings,
-        help="Adaptative Gamified Mechanic Mode selection",
+        help="If Mode = Dynamic, when the user refreshes the page a new widget is generated",
         values=["Static","Dynamic"]
     )
 
@@ -56,10 +56,25 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
         display_name="Gamification Mechanic Id",
         default=0, 
         scope=Scope.user_state,
-        help="Gamified Mechanic Selection by Id (If Id = 0, the mechanic is selected by its Type and)",
+        help="If Id = 0, the mechanic is selected by its Type and",
     )
 
-    editable_fields = ('display_name', 'gmechanic_size','gmechanic_type', 'gmechanic_id', 'adaptative_mode')
+    difficulty = String(  # Only instantiate widgets
+        display_name="Gamification Mechanic Expertise Level",
+        default="easy", 
+        scope=Scope.settings,
+        help="Determines which mechanics can be selected to display, depending on user experience.",
+        values=["easy", "hard"]
+    )
+
+    dashboard_url = String(  # Only instantiate widgets
+        display_name="Associated Dashboard",
+        default="#", 
+        scope=Scope.settings,
+        help="Link to the gamification dashboard of this course."
+    )
+
+    editable_fields = ('display_name','gmechanic_type', 'gmechanic_id', 'adaptative_mode', 'difficulty', 'dashboard_url')
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
@@ -88,11 +103,20 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
     	else:
     		self.adaptative_id = 0
     		to_send = data['adaptative_mech_id']
-    	return {"mech_id": self.gmechanic_id,
+    	return {
+    			"mech_id": self.gmechanic_id,
     			"mech_type" : self.gmechanic_type, 
     			"mech_size": self.gmechanic_size, 
     			"adaptative_mode": self.adaptative_mode, 
-    			"adaptative_mech_id" : to_send}
+    			"adaptative_mech_id" : to_send,
+    			"difficulty" : self.difficulty,
+    			"dashboard_url" : self.dashboard_url
+    			}
+
+    @XBlock.json_handler
+    def init_xblock_content(self, data, suffix=''):
+    	return {"difficulty": self.difficulty}
+
 
     @staticmethod
     def workbench_scenarios():
@@ -103,51 +127,6 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
              """),
             ("Multiple GamificationXBlock",
              """<vertical_demo>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
-                <gamification/>
                 <gamification/>
                 <gamification/>
                 <gamification/>
