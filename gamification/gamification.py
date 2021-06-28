@@ -120,7 +120,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
     	return {
     			"difficulty": self.difficulty,
     			"user_id" : user_id,
-    			"username" : User.objects.filter(id = user_id)
+    			"username" : User.objects.get(id = user_id).username
     			}
 
 
