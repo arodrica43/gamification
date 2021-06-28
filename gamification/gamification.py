@@ -5,6 +5,7 @@ from web_fragments.fragment import Fragment
 from xblock.core import XBlock
 from xblockutils.studio_editable import StudioEditableXBlockMixin
 from xblock.fields import Integer, Scope, String
+from django.contrib.auth.models import User
 
 class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
     """
@@ -115,7 +116,12 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 
     @XBlock.json_handler
     def init_xblock_content(self, data, suffix=''):
-    	return {"difficulty": self.difficulty}
+    	user_id = self.xmodule_runtime.user_id
+    	return {
+    			"difficulty": self.difficulty,
+    			"user_id" : user_id,
+    			"username" : User.objects.filter(user_id = user_id)
+    			}
 
 
     @staticmethod
