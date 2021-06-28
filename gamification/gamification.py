@@ -119,8 +119,8 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
     	user_id = self.xmodule_runtime.user_id
     	return {
     			"difficulty": self.difficulty,
-    			"user_id" : user_id,
-    			"username" : User.objects.filter(user_id = user_id)
+    			"user_id" : user_id
+    			#"username" : User.objects.filter(user_id = user_id)
     			}
 
 
