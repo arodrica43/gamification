@@ -87,10 +87,20 @@ function GamificationXBlock(runtime, element) {
     //read difficulty
     var diff = result["difficulty"];
     uname = result["username"];
-    fetch("https://agmodule.herokuapp.com/api/g_mechanics/retrieve_adaptative_widget_id?user=" + uname + "&difficulty=" + diff) // &difficulty=hard
+    var usage_id;
+    try{ // OpenedX variable (Production)
+      try{
+        usage_id = element.dataset.usageId.replace(/[\s\.\&\:\+\@]/g, "");
+      }catch{
+         usage_id = element["0"].dataset.usageId.replace(/[\s\.\&\:\+\@]/g, "");
+      }
+    } catch { // XBLock SDK variable (Development)
+      usage_id = element.dataset.usage.replace(/[\s\.\&\:\+\@]/g, "");
+    } 
+    fetch("https://agmodule.herokuapp.com/api/g_mechanics/retrieve_adaptative_widget_id?user=" + uname + "&difficulty=" + diff + "&widget_id=" + usage_id) // &difficulty=hard
     .then(response => response.json())
     .then(gmJson => (gmJson.gmechanic_id))
-    .then(mech_id => (set_xblock_content(mech_id)))
+    .then(mech_id => (set_xblock_content(mech_id), setup_data_updater(mech_id, uname)))
     .catch(error => console.log("Error: " + error))
   }
 
@@ -106,4 +116,81 @@ function GamificationXBlock(runtime, element) {
   $(function($) {
     init_xblock_content();
   });
+
+  function setup_data_updater(mechanic_id, username){
+    get_interaction_index(mechanic_id, username)
+    .then((iidx) => post_mechanic_data(mechanic_id, username, iidx, true), iidx)
+    .then((iidx) => setInterval(function(){
+      get_interaction_index(mechanic_id, username)
+      .then((iidx) => post_mechanic_data(mechanic_id, username, iidx, true), post_profile_data(username)).catch(error => console.log("Error: " + error))}, 15000))
+    .then(function(dump){
+      window.onbeforeunload = function (e) {
+        get_interaction_index(mechanic_id, username)
+        .then((iidx) => post_mechanic_data(mechanic_id, username, iidx, false), post_profile_data(username)).catch(error => console.log("Error: " + error))
+      };
+    })
+    .catch(error => console.log("Error: " + error))  
+  }
+
+  function post_mechanic_data(mechanic_id, username, interaction_index, interacting) {
+    fetch("https://eqsriwyz93.execute-api.eu-west-1.amazonaws.com/dev/player", {
+                method: "POST",
+                body: JSON.stringify({
+                    "id": username,
+                    "interactions": [
+                        {
+                            "mechanic_id": mechanic_id,
+                            "index": interaction_index,
+                            "interacting": interacting
+                        }
+                    ]
+                }),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            })
+          .then(response => response.json())
+          .catch(error => console.log("Error: " + error))
+  }
+
+  function post_profile_data(username) {
+    get_player_profile(username)
+    .then(gprofile => (
+        fetch("https://eqsriwyz93.execute-api.eu-west-1.amazonaws.com/dev/player", {
+              method: "POST",
+              body: JSON.stringify({
+                  "id": username,
+                  "gamer_profile": {
+                      "disruptor": gprofile.disruptor,
+                      "free_spirit": gprofile.free_spirit,
+                      "achiever": gprofile.achiever,
+                      "player": gprofile.player,
+                      "socializer": gprofile.socializer,
+                      "philantropist": gprofile.philantropist,
+                      "no_player": gprofile.no_player
+                  }
+              }),
+              headers: {
+                  "Content-type": "application/json; charset=UTF-8"
+              }
+          })
+        .then(response => response.json())
+      ))
+    .catch(error => console.log("Error: " + error))
+    
+  }
+
+  function get_interaction_index(mechanic_id, username) {
+    return fetch("https://agmodule.herokuapp.com/api/statistics/get_interaction_index/" + username + "/" + mechanic_id)  // return this promise
+          .then(response => response.json())
+          .then(statJson => statJson.interaction_index)
+  }
+
+  function get_player_profile(username) {
+    return fetch("https://agmodule.herokuapp.com/api/gamers/" + username + "/" )  // return this promise
+          .then(response => response.json())
+          .then(statJson => statJson.gamer_profile)
+  }
+
+
 }

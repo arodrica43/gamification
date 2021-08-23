@@ -7,4 +7,4 @@ source /edx/app/edxapp/edxapp_env
 cd /edx/app/edxapp/edx-platform
 paver update_assets
 exit
-sudo /edx/bin/supervisorctl restart cms  lms edxapp_worker:
+sudo /edx/bin/supervisorctl restart cms lms edxapp_worker:
