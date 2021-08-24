@@ -119,14 +119,14 @@ function GamificationXBlock(runtime, element) {
 
   function setup_data_updater(mechanic_id, username){
     get_interaction_index(mechanic_id, username)
-    .then((iidx) => post_mechanic_data(mechanic_id, username, iidx, true), iidx)
+    .then((iidx) => (post_mechanic_data(mechanic_id, username, iidx, true), iidx))
     .then((iidx) => setInterval(function(){
       get_interaction_index(mechanic_id, username)
-      .then((iidx) => post_mechanic_data(mechanic_id, username, iidx, true), post_profile_data(username)).catch(error => console.log("Error: " + error))}, 15000))
+      .then((iidx) => (post_mechanic_data(mechanic_id, username, iidx, true), post_profile_data(username))).catch(error => console.log("Error: " + error))}, 15000))
     .then(function(dump){
       window.onbeforeunload = function (e) {
         get_interaction_index(mechanic_id, username)
-        .then((iidx) => post_mechanic_data(mechanic_id, username, iidx, false), post_profile_data(username)).catch(error => console.log("Error: " + error))
+        .then((iidx) => (post_mechanic_data(mechanic_id, username, iidx, false), post_profile_data(username))).catch(error => console.log("Error: " + error))
       };
     })
     .catch(error => console.log("Error: " + error))  
