@@ -97,6 +97,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 
     @XBlock.json_handler
     def set_xblock_content(self, data, suffix=''):
+        user_id = self.xmodule_runtime.user_id
     	if self.adaptative_mode == "Static":
     		if self.adaptative_id == 0:
     			self.adaptative_id = data['adaptative_mech_id']
@@ -105,6 +106,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
     		self.adaptative_id = 0
     		to_send = data['adaptative_mech_id']
     	return {
+                "username" : User.objects.get(id = user_id).username,
     			"mech_id": self.gmechanic_id,
     			"mech_type" : self.gmechanic_type, 
     			"mech_size": self.gmechanic_size, 
