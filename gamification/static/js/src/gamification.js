@@ -137,51 +137,65 @@ function GamificationXBlock(runtime, element) {
   }
 
   function post_mechanic_data(mechanic_id, username, interaction_index, interacting) {
-    fetch("https://eqsriwyz93.execute-api.eu-west-1.amazonaws.com/dev/player", {
-                method: "POST",
-                body: JSON.stringify({
-                    "id": username,
-                    "interactions": [
-                        {
-                            "mechanic_id": mechanic_id,
-                            "index": interaction_index,
-                            "interacting": interacting
-                        }
-                    ]
-                }),
-                headers: {
-                    "Content-type": "application/json; charset=UTF-8"
-                }
-            })
-          .then(response => response.json())
-          .then(resJson => console.log(resJson))
-          .catch(error => console.log("Error: " + error))
+
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+          "id": username,
+          "interactions": [
+              {
+                  "mechanic_id": mechanic_id,
+                  "index": interaction_index,
+                  "interacting": interacting
+              }
+          ]
+      });
+
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+
+    fetch("https://eqsriwyz93.execute-api.eu-west-1.amazonaws.com/dev/player", requestOptions)
+      .then(response => response.json())
+      .then(resJson => console.log(resJson))
+      .catch(error => console.log("Error: " + error))
   }
 
   function post_profile_data(username) {
     get_player_profile(username)
-    .then(gprofile => (
-        fetch("https://eqsriwyz93.execute-api.eu-west-1.amazonaws.com/dev/player", {
-              method: "POST",
-              body: JSON.stringify({
-                  "id": username,
-                  "gamer_profile": {
-                      "disruptor": gprofile.disruptor,
-                      "free_spirit": gprofile.free_spirit,
-                      "achiever": gprofile.achiever,
-                      "player": gprofile.player,
-                      "socializer": gprofile.socializer,
-                      "philantropist": gprofile.philantropist,
-                      "no_player": gprofile.no_player
-                  }
-              }),
-              headers: {
-                  "Content-type": "application/json; charset=UTF-8"
-              }
-          })
+    .then(function(gprofile){
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+
+      var raw = JSON.stringify({
+        "id": 1,
+        "gamer_profile": {
+          "disruptor": gprofile.disruptor,
+          "free_spirit": gprofile.free_spirit,
+          "achiever": gprofile.achiever,
+          "player": gprofile.player,
+          "socializer": gprofile.socializer,
+          "philantropist": gprofile.philantropist,
+          "no_player": gprofile.no_player
+        }
+      });
+
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+      };
+
+      fetch("https://eqsriwyz93.execute-api.eu-west-1.amazonaws.com/dev/player", requestOptions)
         .then(response => response.json())
-        .then(resJson => console.log(resJson))        
-      ))
+        .then(resJson => console.log(resJson)) 
+
+    })
     .catch(error => console.log("Error: " + error))
     
   }
