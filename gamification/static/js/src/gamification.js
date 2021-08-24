@@ -87,6 +87,7 @@ function GamificationXBlock(runtime, element) {
     //read difficulty
     var diff = result["difficulty"];
     uname = result["username"];
+    need_log = result["need_log"];
     var usage_id;
     try{ // OpenedX variable (Production)
       try{
@@ -97,7 +98,7 @@ function GamificationXBlock(runtime, element) {
     } catch { // XBLock SDK variable (Development)
       usage_id = element.dataset.usage.replace(/[\s\.\&\:\+\@]/g, "");
     } 
-    fetch("https://agmodule.herokuapp.com/api/g_mechanics/retrieve_adaptative_widget_id?user=" + uname + "&difficulty=" + diff + "&widget_id=" + usage_id) // &difficulty=hard
+    fetch("https://agmodule.herokuapp.com/api/g_mechanics/retrieve_adaptative_widget_id?user=" + uname + "&difficulty=" + diff + "&widget_id=" + usage_id + "&need_log=" + need_log) // &difficulty=hard
     .then(response => response.json())
     .then(gmJson => (gmJson.gmechanic_id))
     .then(mech_id => (set_xblock_content(mech_id), setup_data_updater(mech_id, uname)))
@@ -184,6 +185,7 @@ function GamificationXBlock(runtime, element) {
 
   function get_interaction_index(mechanic_id, username) {
     console.log("get_interaction_index executed");
+    console.log("Mechanic ID :: " + mechanic_id)
     return fetch("https://agmodule.herokuapp.com/api/statistics/get_interaction_index/" + username + "/" + mechanic_id)  // return this promise
           .then(response => response.json())
           .then(statJson => statJson.interaction_index)

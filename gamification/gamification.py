@@ -117,10 +117,15 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
     @XBlock.json_handler
     def init_xblock_content(self, data, suffix=''):
     	user_id = self.xmodule_runtime.user_id
+        need_log = 1
+        if self.adaptative_mode == "Static":
+            if self.adaptative_id != 0:
+                need_log = 0
     	return {
     			"difficulty": self.difficulty,
     			"user_id" : user_id,
-    			"username" : User.objects.get(id = user_id).username
+    			"username" : User.objects.get(id = user_id).username,
+                "need_log" : need_log
     			}
 
 
