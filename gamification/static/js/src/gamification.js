@@ -150,6 +150,7 @@ function GamificationXBlock(runtime, element) {
                 }
             })
           .then(response => response.json())
+          .then(resJson => console.log(resJson))
           .catch(error => console.log("Error: " + error))
   }
 
@@ -175,18 +176,21 @@ function GamificationXBlock(runtime, element) {
               }
           })
         .then(response => response.json())
+        .then(resJson => console.log(resJson))        
       ))
     .catch(error => console.log("Error: " + error))
     
   }
 
   function get_interaction_index(mechanic_id, username) {
+    console.log("get_interaction_index executed");
     return fetch("https://agmodule.herokuapp.com/api/statistics/get_interaction_index/" + username + "/" + mechanic_id)  // return this promise
           .then(response => response.json())
           .then(statJson => statJson.interaction_index)
   }
 
   function get_player_profile(username) {
+    console.log("get_player_profile executed");
     return fetch("https://agmodule.herokuapp.com/api/gamers/" + username + "/" )  // return this promise
           .then(response => response.json())
           .then(statJson => statJson.gamer_profile)
