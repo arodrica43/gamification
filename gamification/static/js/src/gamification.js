@@ -36,7 +36,7 @@ function GamificationXBlock(runtime, element) {
         usage_id = element.dataset.usage.replace(/[\s\.\&\:\+\@]/g, "");
       } 
 
-      setup_data_updater(mech_id, uname);
+      setup_data_updater(adaptative_mech_id, uname);
 
       if(mech_id == 0){
         if(mech_type == "Adaptative" && mech_size == "Widget"){
