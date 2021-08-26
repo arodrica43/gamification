@@ -118,8 +118,6 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 
 	@XBlock.json_handler
 	def init_xblock_content(self, data, suffix=''):
-
-		unit_block, course_key, course_id, unit_type, unit_children = "None", "None", "None", "None", "None"
 		try:
 			unit_block = self.runtime.get_block(self.parent)
 		except:
@@ -129,15 +127,15 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 		except:
 			course_key = "None"
 		try:
-			course_id = self.course_id
+			course_id = str(self.course_id)
 		except:
 			course_id = "None"
 		try:
-			unit_type = unit_block.scope_ids.block_type
+			unit_type = str(unit_block.scope_ids.block_type)
 		except:
 			unit_type = "None"
 		try:
-			unit_children = unit_block.get_children()
+			unit_children = str(unit_block.get_children())
 		except:
 			unit_children = "None"
 
@@ -152,7 +150,10 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 				"user_id" : user_id,
 				"username" : User.objects.get(id = user_id).username,
 				"need_log" : need_log,
-				"course_key" : course_key
+				"course_key" : course_key,
+				"course_id" : course_id,
+				"unit_type" : unit_type,
+				"children" : unit_children
 				}
 
 
