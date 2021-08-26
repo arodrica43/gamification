@@ -121,23 +121,23 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 		try:
 			unit_block = self.runtime.get_block(self.parent)
 		except:
-			unit_block = "None"
+			unit_block = "Err"
 		try:
-			course_key = str(self.scope_ids)
+			course_key = str(unit_block)
 		except:
-			course_key = "None"
+			course_key = "Err"
 		try:
-			course_id = str(self.course_id.usage_id)
+			course_id = str(unit_block.get_children())
 		except:
-			course_id = "None"
+			course_id = "Err"
 		try:
-			unit_type = str(self.get_progress())
+			unit_type = str(unit_block.get_progress())
 		except:
-			unit_type = "None"
+			unit_type = "Err"
 		try:
-			unit_children = str(unit_block.children)
+			unit_children = str(self.runtime.get_block(unit_block.parent))
 		except:
-			unit_children = "None"
+			unit_children = "Err"
 
 		user_id = self.xmodule_runtime.user_id
 		need_log = 1
