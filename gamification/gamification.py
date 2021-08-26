@@ -94,18 +94,18 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 				done = True
 		return pivot
 
-	def get_leaves(self, source):
-		leaves = []
+	def get_leafs(self, source):
+		leafs = []
 		for x in source.get_children():
 			try:
 				subchilds = x.get_children()
 			except:
 				subchilds = None
 			if subchilds:
-				leaves += self.get_leaves(x)
+				leafs += self.get_leafs(x)
 			else:
-				leaves += [x]
-		return leaves
+				leafs += [x]
+		return leafs
 
 
 
@@ -163,19 +163,21 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 			course_id = "Err"
 		try:
 			source = self.get_source()
-			unit_type = str(len(self.get_leaves(source)))
+			unit_type = str(len(self.get_leafs(source)))
 		except:
 			unit_type = "Err"
 		try:
 			source = self.get_source()
-			leaves = self.get_leaves(source)
-			res = []
-			for x in leaves:
-				try:
-					res += [x.scope_ids.block_type]
-				except:
-					pass
-			unit_children = str(res)
+			leafs = self.get_leafs(source)
+			res = [0]*len(leafs)
+			progress = 0
+			for k in range(len(leafs)):
+				progress += 1
+				if leafs[k].scope_ids.usage_id == self.scope_ids.usage_id:
+					res[k] = 1
+					break
+
+			unit_children = str(res) + " :: " + str(progress) + " :: " + str(progress/len(leafs))
 		except:
 			unit_children = "Err"
 
