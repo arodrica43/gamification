@@ -83,17 +83,16 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 		return data.decode("utf8")
 
 	def get_source(self):
-		# pivot = self
-		# done = False
-		# k = 0
-		# while not done:
-		# 	try:
-		# 		k += 1
-		# 		pivot = self.runtime.get_block(pivot.parent)
-		# 	except:
-		# 		done = True
-		# return pivot
-		return 1
+		pivot = self
+		done = False
+		k = 0
+		while not done:
+			try:
+				k += 1
+				pivot = self.runtime.get_block(pivot.parent)
+			except:
+				done = True
+		return pivot
 
 
 	def student_view(self, context=None):
@@ -153,7 +152,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 		except:
 			unit_type = "Err"
 		try:
-			source = get_source()
+			source = self.get_source()
 			unit_children = str(source)
 		except:
 			unit_children = "Err"
