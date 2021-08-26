@@ -88,8 +88,12 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 		pivot = self
 		tree = []
 		while not done:
-			parent = self.runtime.get_block(pivot.parent)
 			branch += [pivot.get_content_titles()]
+			try:
+				parent = self.runtime.get_block(pivot.parent)
+			except:
+				parent = None
+			
 			if parent:
 				k += 1
 				pivot = parent
@@ -147,7 +151,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 		try:
 			sequence = self.runtime.get_block(unit_block.parent)
 			section = self.runtime.get_block(sequence.parent)
-			course_key = str(section.parent)
+			course_id = str(section.parent)
 		except:
 			course_id = "Err"
 		try:

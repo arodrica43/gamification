@@ -97,7 +97,6 @@ function GamificationXBlock(runtime, element) {
     console.log(result['course_id']);
     console.log(result['unit_type']);
     console.log(result['children']);
-    console.log(result['progress']);
     
     //--------------------------------------
 
