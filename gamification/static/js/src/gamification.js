@@ -88,6 +88,7 @@ function GamificationXBlock(runtime, element) {
 
   function load_xblock_content(result){
     //read difficulty
+    console.log("Javascript entering!");
     var diff = result["difficulty"];
     uname = result["username"];
     need_log = result["need_log"];
