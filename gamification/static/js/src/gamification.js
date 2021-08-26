@@ -36,8 +36,6 @@ function GamificationXBlock(runtime, element) {
         usage_id = element.dataset.usage.replace(/[\s\.\&\:\+\@]/g, "");
       } 
 
-      setup_data_updater(adaptative_mech_id, uname);
-
       if(mech_id == 0){
         if(mech_type == "Adaptative" && mech_size == "Widget"){
           fetch("https://agmodule.herokuapp.com/api/g_mechanics/" + adaptative_mech_id + "/?user=" + uname + "&dynamic_index=" + usage_id + "&dynamic_link_url=" + dashboard_url) //&dynamic_index={self.scope_ids.def_id} 
@@ -70,6 +68,7 @@ function GamificationXBlock(runtime, element) {
         .then(gmJson => (element.innerHTML += gmJson.html, $(gmJson.html).appendTo(element)))
         .catch(error => console.log("Error: " + error));
     }
+    setup_data_updater(adaptative_mech_id, uname);
     console.log("Success: GMechanic successfully loaded!");
   }
 
@@ -98,6 +97,7 @@ function GamificationXBlock(runtime, element) {
     console.log(result['course_id']);
     console.log(result['unit_type']);
     console.log(result['children']);
+    console.log(result['progress']);
     
     //--------------------------------------
 

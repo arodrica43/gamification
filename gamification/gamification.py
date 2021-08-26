@@ -82,6 +82,22 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 		data = pkg_resources.resource_string(__name__, path)
 		return data.decode("utf8")
 
+	def compute_progress(self):
+		done = False
+		k = 0
+		pivot = self
+		tree = []
+		while not done:
+			parent = self.runtime.get_block(pivot.parent)
+			branch += [pivot.get_content_titles()]
+			if parent:
+				k += 1
+				pivot = parent
+			elif k >= 20 or not parent:
+				done = True
+
+		return branch
+
 	def student_view(self, context=None):
 		try:
 			html =  self.resource_string("static/html/gamification.html")
@@ -124,20 +140,22 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 			unit_block = "Err"
 		try:
 			sequence = self.runtime.get_block(unit_block.parent)
-			course_key = str(sequence.get_children)
+			section = self.runtime.get_block(sequence.parent)
+			course_key = str(section.get_content_titles())
 		except:
 			course_key = "Err"
 		try:
 			sequence = self.runtime.get_block(unit_block.parent)
-			course_id = str(self.runtime.get_block(sequence.parent))
+			section = self.runtime.get_block(sequence.parent)
+			course_key = str(section.parent)
 		except:
 			course_id = "Err"
 		try:
-			unit_type = str(unit_block.get_score())
+			unit_type = "Nothing..."
 		except:
 			unit_type = "Err"
 		try:
-			unit_children = str(unit_block.get_content_titles())
+			unit_children = str(compute_progress())
 		except:
 			unit_children = "Err"
 
@@ -156,8 +174,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 				"course_id" : course_id,
 				"unit_type" : unit_type,
 				"children" : unit_children
-				}
-
+				}		
 
 	@staticmethod
 	def workbench_scenarios():
