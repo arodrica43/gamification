@@ -149,10 +149,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 				"difficulty": self.difficulty,
 				"user_id" : user_id,
 				"username" : User.objects.get(id = user_id).username,
-				"need_log" : need_log,
-				"course_key" : course_key,
-				"unit_type" : unit_type,
-				"children" : unit_children
+				"need_log" : need_log
 				}
 
 
