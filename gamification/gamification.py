@@ -82,25 +82,18 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 		data = pkg_resources.resource_string(__name__, path)
 		return data.decode("utf8")
 
-	def compute_progress(self):
+	def get_source(self, block):
+		pivot = self
 		done = False
 		k = 0
-		pivot = self
-		tree = []
 		while not done:
-			branch += [pivot.get_content_titles()]
 			try:
-				parent = self.runtime.get_block(pivot.parent)
-			except:
-				parent = None
-			
-			if parent:
 				k += 1
-				pivot = parent
-			elif k >= 20 or not parent:
+				pivot = self.runtime.get_block(pivot.parent)
+			except:
 				done = True
+		return pivot
 
-		return branch
 
 	def student_view(self, context=None):
 		try:
@@ -159,7 +152,8 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 		except:
 			unit_type = "Err"
 		try:
-			unit_children = str(compute_progress())
+			source = get_source()
+			unit_children = str(source)
 		except:
 			unit_children = "Err"
 
