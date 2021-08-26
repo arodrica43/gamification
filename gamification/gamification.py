@@ -169,7 +169,13 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 		try:
 			source = self.get_source()
 			leaves = self.get_leaves(source)
-			unit_children = str([x for x.scope_ids.block_type in leaves])
+			res = []
+			for x in leaves:
+				try:
+					res += [x.scope_ids.block_type]
+				except:
+					pass
+			unit_children = str(res)
 		except:
 			unit_children = "Err"
 
