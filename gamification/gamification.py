@@ -150,36 +150,17 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 		except:
 			unit_block = "Err"
 		try:
-			sequence = self.runtime.get_block(unit_block.parent)
-			section = self.runtime.get_block(sequence.parent)
-			course_key = str(section.get_content_titles())
-		except:
-			course_key = "Err"
-		try:
-			sequence = self.runtime.get_block(unit_block.parent)
-			section = self.runtime.get_block(sequence.parent)
-			course_id = str(section.parent)
-		except:
-			course_id = "Err"
-		try:
-			source = self.get_source()
-			unit_type = str(len(self.get_leafs(source)))
-		except:
-			unit_type = "Err"
-		try:
 			source = self.get_source()
 			leafs = self.get_leafs(source)
-			progress = 0
 			index = None
 			for k in range(len(leafs)):
-				progress += 1
 				if leafs[k].scope_ids.usage_id == self.scope_ids.usage_id:
 					index = k
 					break
-
-			unit_children = str((0.0 + progress)/len(leafs)) + " :: " + str(index)
+			progress = (1.0 + index)/len(leafs)
 		except:
-			unit_children = "Err"
+			index = None
+			progress = "Err"
 
 		user_id = self.xmodule_runtime.user_id
 		need_log = 1
@@ -192,10 +173,8 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 				"user_id" : user_id,
 				"username" : User.objects.get(id = user_id).username,
 				"need_log" : need_log,
-				"course_key" : course_key,
-				"course_id" : course_id,
-				"unit_type" : unit_type,
-				"children" : unit_children
+				"progress" : progress,
+				"pipe" : index
 				}		
 
 	@staticmethod
