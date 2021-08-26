@@ -168,7 +168,8 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 			unit_type = "Err"
 		try:
 			source = self.get_source()
-			unit_children = str(self.get_leaves(source))
+			leaves = self.get_leaves(source)
+			unit_children = str([x for x.scope_ids.block_type in leaves])
 		except:
 			unit_children = "Err"
 
