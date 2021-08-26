@@ -123,6 +123,10 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 		except:
 			unit_block = "None"
 		try:
+			course_key = self.scope_ids.usage_id.course_key
+		except:
+			course_key = "None"
+		try:
 			course_id = self.course_id
 		except:
 			course_id = "None"
@@ -146,7 +150,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 				"user_id" : user_id,
 				"username" : User.objects.get(id = user_id).username,
 				"need_log" : need_log,
-				"course_key" : self.scope_ids.usage_id.course_key,
+				"course_key" : course_key,
 				"unit_type" : unit_type,
 				"children" : unit
 				}
