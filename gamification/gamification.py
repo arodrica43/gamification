@@ -94,6 +94,9 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 				done = True
 		return pivot
 
+	def get_leaves(self, source):
+		pass
+
 	def student_view(self, context=None):
 		try:
 			html =  self.resource_string("static/html/gamification.html")
@@ -152,7 +155,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 			unit_type = "Err"
 		try:
 			source = self.get_source()
-			unit_children = str(source.get_content_titles())
+			unit_children = str(source.get_children())
 		except:
 			unit_children = "Err"
 
