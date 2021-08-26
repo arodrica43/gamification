@@ -82,7 +82,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 		data = pkg_resources.resource_string(__name__, path)
 		return data.decode("utf8")
 
-	def get_source(self, block):
+	def get_source(self):
 		pivot = self
 		done = False
 		k = 0
