@@ -34,11 +34,18 @@ function GamificationXBlock(runtime, element) {
         }
       } catch { // XBLock SDK variable (Development)
         usage_id = element.dataset.usage.replace(/[\s\.\&\:\+\@]/g, "");
-      } 
+      }
 
+
+      // DEBUG :: ----------------------------
+      console.log("Progress % : " + result['progress']);
+      progress = result['progress']
+      console.log("XBlock position: " + result['pipe']);
+    
+      //--------------------------------------
       if(mech_id == 0){
         if(mech_type == "Adaptative" && mech_size == "Widget"){
-          fetch("https://agmodule.herokuapp.com/api/g_mechanics/" + adaptative_mech_id + "/?user=" + uname + "&dynamic_index=" + usage_id + "&dynamic_link_url=" + dashboard_url) //&dynamic_index={self.scope_ids.def_id} 
+          fetch("https://agmodule.herokuapp.com/api/g_mechanics/" + adaptative_mech_id + "/?user=" + uname + "&dynamic_index=" + usage_id + "&dynamic_link_url=" + dashboard_url + "&dynamic_progress=" + progress) //&dynamic_index={self.scope_ids.def_id} 
           .then(response => response.json())
           .then(gmJson => (element.innerHTML += gmJson.html, $(gmJson.html).appendTo(element)))
           .catch(error => console.log("Error: " + error))
@@ -87,17 +94,9 @@ function GamificationXBlock(runtime, element) {
 
   function load_xblock_content(result){
     //read difficulty
-    console.log("Javascript entering!");
     var diff = result["difficulty"];
     uname = result["username"];
     need_log = result["need_log"];
-
-    // DEBUG :: ----------------------------
-    console.log(result['progress']);
-    progress = result['progress']
-    console.log(result['pipe']);
-  
-    //--------------------------------------
 
     var usage_id;
     try{ // OpenedX variable (Production)
@@ -109,7 +108,7 @@ function GamificationXBlock(runtime, element) {
     } catch { // XBLock SDK variable (Development)
       usage_id = element.dataset.usage.replace(/[\s\.\&\:\+\@]/g, "");
     } 
-    fetch("https://agmodule.herokuapp.com/api/g_mechanics/retrieve_adaptative_widget_id?user=" + uname + "&difficulty=" + diff + "&widget_id=" + usage_id + "&need_log=" + need_log + "&progress=" + progress) // &difficulty=hard
+    fetch("https://agmodule.herokuapp.com/api/g_mechanics/retrieve_adaptative_widget_id?user=" + uname + "&difficulty=" + diff + "&widget_id=" + usage_id + "&need_log=" + need_log) // &difficulty=hard
     .then(response => response.json())
     .then(gmJson => (gmJson.gmechanic_id))
     .then(mech_id => (set_xblock_content(mech_id)))

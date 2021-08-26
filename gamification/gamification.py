@@ -125,6 +125,18 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 	@XBlock.json_handler
 	def set_xblock_content(self, data, suffix=''):
 		user_id = self.xmodule_runtime.user_id
+		try:
+			source = self.get_source()
+			leafs = self.get_leafs(source)
+			index = None
+			for k in range(len(leafs)):
+				if leafs[k].scope_ids.usage_id == self.scope_ids.usage_id:
+					index = k
+					break
+			progress = (1.0 + index)/len(leafs)
+		except:
+			index = None
+			progress = "Err"
 		if self.adaptative_mode == "Static":
 			if self.adaptative_id == 0:
 				self.adaptative_id = data['adaptative_mech_id']
@@ -140,27 +152,14 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 				"adaptative_mode": self.adaptative_mode, 
 				"adaptative_mech_id" : to_send,
 				"difficulty" : self.difficulty,
-				"dashboard_url" : self.dashboard_url
+				"dashboard_url" : self.dashboard_url,
+				"progress" : progress,
+				"pipe" : index
 				}
 
 	@XBlock.json_handler
 	def init_xblock_content(self, data, suffix=''):
-		try:
-			unit_block = self.runtime.get_block(self.parent)
-		except:
-			unit_block = "Err"
-		try:
-			source = self.get_source()
-			leafs = self.get_leafs(source)
-			index = None
-			for k in range(len(leafs)):
-				if leafs[k].scope_ids.usage_id == self.scope_ids.usage_id:
-					index = k
-					break
-			progress = (1.0 + index)/len(leafs)
-		except:
-			index = None
-			progress = "Err"
+		
 
 		user_id = self.xmodule_runtime.user_id
 		need_log = 1
@@ -172,9 +171,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 				"difficulty": self.difficulty,
 				"user_id" : user_id,
 				"username" : User.objects.get(id = user_id).username,
-				"need_log" : need_log,
-				"progress" : progress,
-				"pipe" : index
+				"need_log" : need_log
 				}		
 
 	@staticmethod
