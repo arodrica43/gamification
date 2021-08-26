@@ -63,7 +63,7 @@ function GamificationXBlock(runtime, element) {
           .then(mech_list => (ids_list = [],
                     mech_list.forEach((item,index) => ids_list.push(item.id)),
                     ids_list))
-          .then(ids_list => ( fetch("https://agmodule.herokuapp.com/api/g_mechanics/" + ids_list[Math.floor(Math.random() * ids_list.length)] + "/?user=" + uname + "&dynamic_index=" + usage_id + "&dynamic_link_url=" + dashboard_url) //&dynamic_index={self.scope_ids.def_id} 
+          .then(ids_list => ( fetch("https://agmodule.herokuapp.com/api/g_mechanics/" + ids_list[Math.floor(Math.random() * ids_list.length)] + "/?user=" + uname + "&dynamic_index=" + usage_id + "&dynamic_link_url=" + dashboard_url +  "&dynamic_progress=" + progress) //&dynamic_index={self.scope_ids.def_id} 
                     .then(response => response.json())
                     .then(gmJson => (element.innerHTML += gmJson.html, $(gmJson.html).appendTo(element))) // first you can do $('#main-embedded-content', element)[0].innerHTML = gmJson.html, 
                     .catch(error => console.log("Error: " + error))))
