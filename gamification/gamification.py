@@ -169,15 +169,15 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 		try:
 			source = self.get_source()
 			leafs = self.get_leafs(source)
-			res = [0]*len(leafs)
 			progress = 0
+			index = None
 			for k in range(len(leafs)):
 				progress += 1
 				if leafs[k].scope_ids.usage_id == self.scope_ids.usage_id:
-					res[k] = 1
+					index = k
 					break
 
-			unit_children = str(res) + " :: " + str(progress) + " :: " + str(progress/len(leafs))
+			unit_children = str((0.0 + progress)/len(leafs)) + " :: " + str(index)
 		except:
 			unit_children = "Err"
 
