@@ -123,19 +123,21 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 		except:
 			unit_block = "Err"
 		try:
-			course_key = str(unit_block)
+			sequence = self.runtime.get_block(unit_block.parent)
+			course_key = str(sequence.get_children)
 		except:
 			course_key = "Err"
 		try:
-			course_id = str(unit_block.get_children())
+			sequence = self.runtime.get_block(unit_block.parent)
+			course_id = str(self.runtime.get_block(sequence.parent))
 		except:
 			course_id = "Err"
 		try:
-			unit_type = str(unit_block.get_progress())
+			unit_type = str(unit_block.get_score())
 		except:
 			unit_type = "Err"
 		try:
-			unit_children = str(self.runtime.get_block(unit_block.parent))
+			unit_children = str(unit_block.get_content_titles())
 		except:
 			unit_children = "Err"
 
