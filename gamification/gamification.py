@@ -152,7 +152,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 				"need_log" : need_log,
 				"course_key" : course_key,
 				"unit_type" : unit_type,
-				"children" : unit
+				"children" : unit_children
 				}
 
 
