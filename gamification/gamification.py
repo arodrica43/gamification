@@ -95,7 +95,19 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 		return pivot
 
 	def get_leaves(self, source):
-		pass
+		leaves = []
+		for x in source.get_children():
+			try:
+				subchilds = x.get_children()
+			except:
+				subchilds = None
+			if subchilds:
+				leaves += self.get_leaves(x)
+			else:
+				leaves += [x]
+		return leaves
+
+
 
 	def student_view(self, context=None):
 		try:
@@ -150,12 +162,13 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 		except:
 			course_id = "Err"
 		try:
-			unit_type = "Nothing..."
+			source = self.get_source()
+			unit_type = str(len(self.get_leaves(source)))
 		except:
 			unit_type = "Err"
 		try:
 			source = self.get_source()
-			unit_children = str(source.get_children())
+			unit_children = str(self.get_leaves(source))
 		except:
 			unit_children = "Err"
 
