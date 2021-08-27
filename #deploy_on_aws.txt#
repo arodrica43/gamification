@@ -1,0 +1,10 @@
+ssh -i edx-server-shh-key-gamification.pem ubuntu@ec2-34-247-177-44.eu-west-1.compute.amazonaws.com
+ssh -i ssh-ansible-test.pem ubuntu@34.242.250.116
+
+sudo -H -u edxapp bash
+source /edx/app/edxapp/edxapp_env
+/edx/bin/pip.edxapp install /home/ubuntu/tu-repositorio
+cd /edx/app/edxapp/edx-platform
+paver update_assets
+exit
+sudo /edx/bin/supervisorctl restart cms lms edxapp_worker:
