@@ -157,7 +157,8 @@ function GamificationXBlock(runtime, element) {
                   "index": interaction_index,
                   "interacting": interacting
               }
-          ]
+          ],
+          "next_mechanic_id" : mechanic_id
       });
 
     var requestOptions = {
@@ -180,7 +181,7 @@ function GamificationXBlock(runtime, element) {
       myHeaders.append("Content-Type", "text/plain");
 
       var raw = JSON.stringify({
-        "id": 1,
+        "id": username,
         "gamer_profile": {
           "disruptor": gprofile.disruptor,
           "free_spirit": gprofile.free_spirit,
