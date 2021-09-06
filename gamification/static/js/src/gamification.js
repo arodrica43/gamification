@@ -147,7 +147,7 @@ function GamificationXBlock(runtime, element) {
   function post_mechanic_data(mechanic_id, username, interaction_index, interacting) {
 
     var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Content-Type", "text/plain");
 
     var raw = JSON.stringify({
           "id": username,
@@ -177,7 +177,7 @@ function GamificationXBlock(runtime, element) {
     get_player_profile(username)
     .then(function(gprofile){
       var myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Content-Type", "text/plain");
 
       var raw = JSON.stringify({
         "id": 1,
