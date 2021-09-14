@@ -155,7 +155,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 		#Course tabsp
 		store = modulestore()
 		#with store.bulk_operations(course_id):
-		course_id = str(self.scope_ids.usage_id.course_key)
+		course_id = self.scope_ids.usage_id.course_key
 		course = store.get_course(course_id)
 		tab_id = "None"
 		for tab in course.tabs:
@@ -182,7 +182,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 				"difficulty" : self.difficulty,
 				"progress" : progress,
 				"mean_score" : score,
-				"course_id" : course_id,
+				"course_id" : str(course_id),
 				"tab_id" : tab_id,
 				"pipe" : index
 				}
