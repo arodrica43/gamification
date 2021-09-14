@@ -6,6 +6,8 @@ from xblock.core import XBlock
 from xblockutils.studio_editable import StudioEditableXBlockMixin
 from xblock.fields import Integer, Scope, String
 from django.contrib.auth.models import User
+from xmodule.modulestore.django import modulestore
+from xmodule.tabs import CourseTab
 
 class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 	"""
@@ -68,14 +70,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 		values=["easy", "hard"]
 	)
 
-	dashboard_url = String(  # Only instantiate widgets
-		display_name="Associated Dashboard",
-		default="#", 
-		scope=Scope.settings,
-		help="Link to the gamification dashboard of this course."
-	)
-
-	editable_fields = ('display_name','gmechanic_type', 'gmechanic_id', 'adaptative_mode', 'difficulty', 'dashboard_url')
+	editable_fields = ('display_name','gmechanic_type', 'gmechanic_id', 'adaptative_mode', 'difficulty')
 
 	def resource_string(self, path):
 		"""Handy helper for getting resources from our kit."""
@@ -157,6 +152,26 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 				continue
 		if n > 0:
 			score = score/n
+		#Course tabsp
+        store = modulestore()
+        #with store.bulk_operations(course_id):
+        course_id = self.scope_ids.usage_id.course_key
+        course = store.get_course(course_id)
+        tab_id = "None"
+        for tab in course.tabs:
+            try:
+                tab_name = tab.get('name')
+            except:
+                pass
+            try:
+                if str(tab_name) == "Dashboard":
+                    try:
+                        tab_id = str(tab.get('tab_id'))[11:]
+                        break
+                    except:
+                        pass
+            except:
+                pass
 		return {
 				"username" : User.objects.get(id = user_id).username,
 				"mech_id": self.gmechanic_id,
@@ -165,9 +180,10 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 				"adaptative_mode": self.adaptative_mode, 
 				"adaptative_mech_id" : to_send,
 				"difficulty" : self.difficulty,
-				"dashboard_url" : self.dashboard_url,
 				"progress" : progress,
 				"mean_score" : score,
+				"course_id" : course_id,
+				"tab_id" : tab_id,
 				"pipe" : index
 				}
 

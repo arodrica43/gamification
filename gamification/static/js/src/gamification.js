@@ -24,7 +24,11 @@ function GamificationXBlock(runtime, element) {
       var adaptative_mode = result["adaptative_mode"];
       var adaptative_mech_id = result["adaptative_mech_id"];
       var difficulty = result["difficulty"];
-      var dashboard_url = result["dashboard_url"];
+      protocol = window.location.protocol;
+      hostname = window.location.hostname;
+      course_id = result["course_id"];
+      tab_id = result["tab_id"];
+      var dashboard_url = protocol + "//" + hostname + "/courses/" + course_id + "/" + tab_id;
       var mean_score = result["mean_score"];
       console.log(result["mean_score"]);
       var usage_id;
