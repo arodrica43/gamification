@@ -151,7 +151,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 			try:
 				lf = leafs[i]
 				bscore = lf.get_score()
-				score += bscore[0]/bscore[1]
+				score += (0.0 + bscore[0])/bscore[1]
 				n += 1
 			except:
 				continue
