@@ -146,12 +146,17 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 		else:
 			self.adaptative_id = 0
 			to_send = data['adaptative_mech_id']
-		score = -1
-		if index > 0:
+		score, n = 0, 0
+		for i in range(index):
 			try:
-				score = leafs[index - 1].get_score()
+				lf = leafs[i]
+				bscore = lf.get_score()
+				score += bscore[0]/bscore[1]
+				n += 1
 			except:
 				pass
+		if n > 0:
+			score = score/n
 		return {
 				"username" : User.objects.get(id = user_id).username,
 				"mech_id": self.gmechanic_id,
@@ -162,7 +167,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 				"difficulty" : self.difficulty,
 				"dashboard_url" : self.dashboard_url,
 				"progress" : progress,
-				"score" : score,
+				"mean_score" : score,
 				"pipe" : index
 				}
 
