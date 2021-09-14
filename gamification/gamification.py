@@ -172,20 +172,20 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 						pass
 			except:
 				pass
-			return {
-				"username" : User.objects.get(id = user_id).username,
-				"mech_id": self.gmechanic_id,
-				"mech_type" : self.gmechanic_type, 
-				"mech_size": self.gmechanic_size, 
-				"adaptative_mode": self.adaptative_mode, 
-				"adaptative_mech_id" : to_send,
-				"difficulty" : self.difficulty,
-				"progress" : progress,
-				"mean_score" : score,
-				"course_id" : str(course_id),
-				"tab_id" : tab_id,
-				"pipe" : index
-				}
+		return {
+			"username" : User.objects.get(id = user_id).username,
+			"mech_id": self.gmechanic_id,
+			"mech_type" : self.gmechanic_type, 
+			"mech_size": self.gmechanic_size, 
+			"adaptative_mode": self.adaptative_mode, 
+			"adaptative_mech_id" : to_send,
+			"difficulty" : self.difficulty,
+			"progress" : progress,
+			"mean_score" : score,
+			"course_id" : str(course_id),
+			"tab_id" : tab_id,
+			"pipe" : index
+			}
 
 	@XBlock.json_handler
 	def init_xblock_content(self, data, suffix=''):
