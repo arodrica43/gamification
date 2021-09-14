@@ -154,7 +154,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 				score += bscore[0]/bscore[1]
 				n += 1
 			except:
-				pass
+				continue
 		if n > 0:
 			score = score/n
 		return {
