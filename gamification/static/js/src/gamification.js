@@ -25,6 +25,7 @@ function GamificationXBlock(runtime, element) {
       var adaptative_mech_id = result["adaptative_mech_id"];
       var difficulty = result["difficulty"];
       var dashboard_url = result["dashboard_url"];
+      console.log(result["score"]);
       var usage_id;
       try{ // OpenedX variable (Production)
         try{
