@@ -30,6 +30,7 @@ function GamificationXBlock(runtime, element) {
       tab_id = result["tab_id"];
       var dashboard_url = protocol + "//" + hostname + "/courses/" + course_id + "/" + tab_id;
       var mean_score = result["mean_score"];
+      var last_score = result["last_score"];
       console.log(result["mean_score"]);
       var usage_id;
       try{ // OpenedX variable (Production)
@@ -51,8 +52,8 @@ function GamificationXBlock(runtime, element) {
       //--------------------------------------
       if(mech_id == 0){
         if(mech_type == "Adaptative" && mech_size == "Widget"){
-          console.log("https://agmodule.herokuapp.com/api/g_mechanics/" + adaptative_mech_id + "/?user=" + uname + "&dynamic_index=" + usage_id + "&dynamic_progress=" + progress + "&mean_score=" + mean_score + "&dynamic_link_url=" + dashboard_url);
-          fetch("https://agmodule.herokuapp.com/api/g_mechanics/" + adaptative_mech_id + "/?user=" + uname + "&dynamic_index=" + usage_id + "&dynamic_progress=" + progress + "&mean_score=" + mean_score + "&dynamic_link_url=" + dashboard_url) //&dynamic_index={self.scope_ids.def_id} 
+          console.log("https://agmodule.herokuapp.com/api/g_mechanics/" + adaptative_mech_id + "/?user=" + uname + "&dynamic_index=" + usage_id + "&dynamic_progress=" + progress + "&mean_score=" + mean_score + "&last_score=" + last_score + "&dynamic_link_url=" + dashboard_url);
+          fetch("https://agmodule.herokuapp.com/api/g_mechanics/" + adaptative_mech_id + "/?user=" + uname + "&dynamic_index=" + usage_id + "&dynamic_progress=" + progress + "&mean_score=" + mean_score + "&last_score=" + last_score + "&dynamic_link_url=" + dashboard_url) //&dynamic_index={self.scope_ids.def_id} 
           .then(response => response.json())
           .then(gmJson => (element.innerHTML += gmJson.html, $(gmJson.html).appendTo(element)))
           .catch(error => console.log("Error: " + error))
@@ -70,7 +71,7 @@ function GamificationXBlock(runtime, element) {
           .then(mech_list => (ids_list = [],
                     mech_list.forEach((item,index) => ids_list.push(item.id)),
                     ids_list))
-          .then(ids_list => ( fetch("https://agmodule.herokuapp.com/api/g_mechanics/" + ids_list[Math.floor(Math.random() * ids_list.length)] + "/?user=" + uname + "&dynamic_index=" + usage_id + "&dynamic_progress=" + progress + "&mean_score=" + mean_score + "&dynamic_link_url=" + dashboard_url) //&dynamic_index={self.scope_ids.def_id} 
+          .then(ids_list => ( fetch("https://agmodule.herokuapp.com/api/g_mechanics/" + ids_list[Math.floor(Math.random() * ids_list.length)] + "/?user=" + uname + "&dynamic_index=" + usage_id + "&dynamic_progress=" + progress + "&mean_score=" + mean_score + "&last_score=" + last_score + "&dynamic_link_url=" + dashboard_url) //&dynamic_index={self.scope_ids.def_id} 
                     .then(response => response.json())
                     .then(gmJson => (element.innerHTML += gmJson.html, $(gmJson.html).appendTo(element))) // first you can do $('#main-embedded-content', element)[0].innerHTML = gmJson.html, 
                     .catch(error => console.log("Error: " + error))))
