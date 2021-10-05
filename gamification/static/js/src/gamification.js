@@ -23,7 +23,6 @@ function GamificationXBlock(runtime, element) {
       var mech_size = result["mech_size"];
       var adaptative_mode = result["adaptative_mode"];
       var adaptative_mech_id = result["adaptative_mech_id"];
-      var difficulty = result["difficulty"];
       protocol = window.location.protocol;
       hostname = window.location.hostname;
       course_id = result["course_id"];
@@ -111,8 +110,7 @@ function GamificationXBlock(runtime, element) {
   }
 
   function load_xblock_content(result){
-    //read difficulty
-    var diff = result["difficulty"];
+
     uname = result["username"];
     need_log = result["need_log"];
     current_course_id = result["course_id"];
@@ -128,7 +126,7 @@ function GamificationXBlock(runtime, element) {
     } catch { // XBLock SDK variable (Development)
       usage_id = element.dataset.usage.replace(/[\s\.\&\:\+\@]/g, "");
     } 
-    fetch("https://agmodule.herokuapp.com/api/g_mechanics/retrieve_adaptative_widget_id?user=" + uname + "&difficulty=" + diff + "&widget_id=" + usage_id + "&need_log=" + need_log + "&course_id=" + current_course_id) // &difficulty=hard
+    fetch("https://agmodule.herokuapp.com/api/g_mechanics/retrieve_adaptative_widget_id?user=" + uname + "&widget_id=" + usage_id + "&need_log=" + need_log + "&course_id=" + current_course_id)
     .then(response => response.json())
     .then(gmJson => (gmJson.gmechanic_id))
     .then(mech_id => (set_xblock_content(mech_id)))

@@ -62,15 +62,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 		help="If Id = 0, the mechanic is selected by its Type and",
 	)
 
-	difficulty = String(  # Only instantiate widgets
-		display_name="Gamification Mechanic Expertise Level",
-		default="easy", 
-		scope=Scope.settings,
-		help="Determines which mechanics can be selected to display, depending on user experience.",
-		values=["easy", "hard"]
-	)
-
-	editable_fields = ('display_name','gmechanic_type', 'gmechanic_id', 'adaptative_mode', 'difficulty')
+	editable_fields = ('display_name','gmechanic_type', 'gmechanic_id', 'adaptative_mode')
 
 	def resource_string(self, path):
 		"""Handy helper for getting resources from our kit."""
@@ -186,7 +178,6 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 			"mech_size": self.gmechanic_size, 
 			"adaptative_mode": self.adaptative_mode, 
 			"adaptative_mech_id" : to_send,
-			"difficulty" : self.difficulty,
 			"progress" : progress,
 			"activity_progress": activity_progress,
 			"last_score" : last_score,
@@ -194,7 +185,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 			"course_id" : str(course_id),
 			"tab_id" : tab_id,
 			"unit_id" : unit_id,
-			"pipe" : str(leafs[index - 1].has_submitted_answer())
+			"pipe" : "empty"
 			}
 
 	@XBlock.json_handler
@@ -208,7 +199,6 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 				need_log = 0
 
 		return {
-				"difficulty": self.difficulty,
 				"user_id" : user_id,
 				"username" : User.objects.get(id = user_id).username,
 				"need_log" : need_log,
