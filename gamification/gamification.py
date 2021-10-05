@@ -142,23 +142,21 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 		else:
 			self.adaptative_id = 0
 			to_send = data['adaptative_mech_id']
-		score, last_score, n, total_activities, completed_activities = 0, 0, 0, 0, 0
-		for i in range(index):
+		score, last_score, n, total_activities = 0, 0, 0, 0
+		for i in range(len(leafs)):
 			try:
 				lf = leafs[i]
 				bscore = lf.get_score()
-				last_score = (0.0 + bscore[0])/bscore[1]
-				if i < index:
+				if lf.has_submitted_answer():
+					last_score = (0.0 + bscore[0])/bscore[1]
 					score += last_score
 					n += 1
-					if lf.has_submitted_answer():
-						completed_activities += 1
 				total_activities += 1
 			except:
 				continue
 		activity_progress = 0
 		if total_activities > 0:
-			activity_progress = (0.0 + completed_activities)/total_activities
+			activity_progress = (0.0 + n)/total_activities
 		if n > 0:
 			score = score/n
 		#Course tabsp
