@@ -116,6 +116,7 @@ function GamificationXBlock(runtime, element) {
     uname = result["username"];
     need_log = result["need_log"];
     current_course_id = result["course_id"];
+    console.log(current_course_id);
 
     var usage_id;
     try{ // OpenedX variable (Production)
