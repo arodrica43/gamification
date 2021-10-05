@@ -120,6 +120,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 	@XBlock.json_handler
 	def set_xblock_content(self, data, suffix=''):
 		user_id = self.xmodule_runtime.user_id
+		unit_id = str(self.runtime.get_block(self.parent).scope_ids.usage_id)
 		try:
 			source = self.get_source()
 			leafs = self.get_leafs(source)
@@ -141,16 +142,21 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 		else:
 			self.adaptative_id = 0
 			to_send = data['adaptative_mech_id']
-		score, last_score, n = 0, 0, 0
-		for i in range(index):
+		score, last_score, n, total_activities = 0, 0, 0, 0
+		for i in range(len(leafs)):
 			try:
 				lf = leafs[i]
 				bscore = lf.get_score()
-				last_score = (0.0 + bscore[0])/bscore[1]
-				score += last_score
-				n += 1
+				if lf.has_submitted_answer():
+					last_score = (0.0 + bscore[0])/bscore[1]
+					score += last_score
+					n += 1
+				total_activities += 1
 			except:
 				continue
+		activity_progress = 0
+		if total_activities > 0:
+			activity_progress = (0.0 + n)/total_activities
 		if n > 0:
 			score = score/n
 		#Course tabsp
@@ -182,11 +188,13 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 			"adaptative_mech_id" : to_send,
 			"difficulty" : self.difficulty,
 			"progress" : progress,
+			"activity_progress": activity_progress,
 			"last_score" : last_score,
 			"mean_score" : score,
 			"course_id" : str(course_id),
 			"tab_id" : tab_id,
-			"pipe" : index
+			"unit_id" : unit_id,
+			"pipe" : str(leafs[index - 1].has_submitted_answer())
 			}
 
 	@XBlock.json_handler
@@ -203,7 +211,8 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 				"difficulty": self.difficulty,
 				"user_id" : user_id,
 				"username" : User.objects.get(id = user_id).username,
-				"need_log" : need_log
+				"need_log" : need_log,
+				"course_id" : str(self.scope_ids.usage_id.course_key)
 				}		
 
 	@staticmethod
