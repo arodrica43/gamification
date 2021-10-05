@@ -56,6 +56,7 @@ function GamificationXBlock(runtime, element) {
       console.log("XBlock position: " + result['progress']);
       console.log("Last score: " + result['last_score']);
       console.log("Mean_score: " + result['mean_score']);
+      console.log(result["pipe"])
 
     
       //--------------------------------------

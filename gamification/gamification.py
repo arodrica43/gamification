@@ -196,7 +196,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 			"course_id" : str(course_id),
 			"tab_id" : tab_id,
 			"unit_id" : unit_id,
-			"pipe" : "nothing"
+			"pipe" : str(leafs[index - 1].has_submitted_answer())
 			}
 
 	@XBlock.json_handler
