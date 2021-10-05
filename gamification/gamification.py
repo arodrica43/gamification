@@ -147,7 +147,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 			try:
 				lf = leafs[i]
 				bscore = lf.get_score()
-				if lf.has_submitted_answer():
+				if len(bscore) > 0: # lf.has_submitted_answer()
 					last_score = (0.0 + bscore[0])/bscore[1]
 					score += last_score
 					n += 1
