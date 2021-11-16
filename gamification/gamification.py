@@ -122,8 +122,8 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 					index = k
 					break
 			progress = (1.0 + index)/len(leafs)
-			#if index > 0:
-			#	previous_type = str(leafs[index - 1].scope_ids.block_type)
+			if index > 0:
+				previous_type = str(leafs[index - 1].scope_ids.block_type)
 		except:
 			index = None
 			progress = "Err"
@@ -185,6 +185,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 			"course_id" : str(course_id),
 			"tab_id" : tab_id,
 			"unit_id" : unit_id,
+			"last_activity_type" : previous_type,
 			"pipe" : "empty"
 			}
 

@@ -36,6 +36,9 @@ function GamificationXBlock(runtime, element) {
       //console.log(activity_progress);
       var unit_id = result["unit_id"];
       //console.log(unit_id);
+      var last_activity_type = result["last_activity_type"];
+      console.log("Last activity type");
+      console.log(last_activity_type);
 
       var usage_id;
       try{ // OpenedX variable (Production)
@@ -61,8 +64,8 @@ function GamificationXBlock(runtime, element) {
       //--------------------------------------
       if(mech_id == 0){
         if(mech_type == "Adaptative" && mech_size == "Widget"){
-          console.log("https://agmodule.herokuapp.com/api/g_mechanics/" + adaptative_mech_id + "/?user=" + uname + "&dynamic_index=" + usage_id + "&course_id=" + course_id + "&dynamic_progress=" + progress + "&activity_progress=" + activity_progress + "&mean_score=" + mean_score + "&last_score=" + last_score + "&unit_id=" + unit_id  + "&dynamic_link_url=" + dashboard_url);
-          fetch("https://agmodule.herokuapp.com/api/g_mechanics/" + adaptative_mech_id + "/?user=" + uname + "&dynamic_index=" + usage_id + "&course_id=" + course_id + "&dynamic_progress=" + progress + "&activity_progress=" + activity_progress + "&mean_score=" + mean_score + "&last_score=" + last_score + "&unit_id=" + unit_id  + "&dynamic_link_url=" + dashboard_url) //&dynamic_index={self.scope_ids.def_id} 
+          console.log("https://agmodule.herokuapp.com/api/g_mechanics/" + adaptative_mech_id + "/?user=" + uname + "&dynamic_index=" + usage_id + "&course_id=" + course_id + "&dynamic_progress=" + progress + "&activity_progress=" + activity_progress + "&mean_score=" + mean_score + "&last_score=" + last_score + "&last_activity_type=" + last_activity_type + "&unit_id=" + unit_id  + "&dynamic_link_url=" + dashboard_url);
+          fetch("https://agmodule.herokuapp.com/api/g_mechanics/" + adaptative_mech_id + "/?user=" + uname + "&dynamic_index=" + usage_id + "&course_id=" + course_id + "&dynamic_progress=" + progress + "&activity_progress=" + activity_progress + "&mean_score=" + mean_score + "&last_score=" + last_score + "&last_activity_type=" + last_activity_type + "&unit_id=" + unit_id  + "&dynamic_link_url=" + dashboard_url) //&dynamic_index={self.scope_ids.def_id} 
           .then(response => response.json())
           .then(gmJson => (element.innerHTML += gmJson.html, $(gmJson.html).appendTo(element)))
           .catch(error => console.log("Error: " + error))
@@ -80,7 +83,7 @@ function GamificationXBlock(runtime, element) {
           .then(mech_list => (ids_list = [],
                     mech_list.forEach((item,index) => ids_list.push(item.id)),
                     ids_list))
-          .then(ids_list => ( fetch("https://agmodule.herokuapp.com/api/g_mechanics/" + ids_list[Math.floor(Math.random() * ids_list.length)] + "/?user=" + uname + "&dynamic_index=" + usage_id + "&course_id=" + course_id + "&dynamic_progress=" + progress + "&activity_progress=" + activity_progress + "&mean_score=" + mean_score + "&last_score=" + last_score + "&unit_id=" + unit_id  + "&dynamic_link_url=" + dashboard_url) //&dynamic_index={self.scope_ids.def_id} 
+          .then(ids_list => ( fetch("https://agmodule.herokuapp.com/api/g_mechanics/" + ids_list[Math.floor(Math.random() * ids_list.length)] + "/?user=" + uname + "&dynamic_index=" + usage_id + "&course_id=" + course_id + "&dynamic_progress=" + progress + "&activity_progress=" + activity_progress + "&mean_score=" + mean_score + "&last_score=" + last_score + "&last_activity_type=" + last_activity_type + "&unit_id=" + unit_id  + "&dynamic_link_url=" + dashboard_url) //&dynamic_index={self.scope_ids.def_id} 
                     .then(response => response.json())
                     .then(gmJson => (element.innerHTML += gmJson.html, $(gmJson.html).appendTo(element))) // first you can do $('#main-embedded-content', element)[0].innerHTML = gmJson.html, 
                     .catch(error => console.log("Error: " + error))))
