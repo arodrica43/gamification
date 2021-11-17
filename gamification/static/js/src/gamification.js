@@ -40,6 +40,10 @@ function GamificationXBlock(runtime, element) {
       console.log("Last activity type");
       console.log(last_activity_type);
 
+      stage = result['stage'];
+      endpoint = result['endpoint'];
+      nmURL = endpoint + "/" + stage;
+
       var usage_id;
       try{ // OpenedX variable (Production)
         try{
@@ -58,7 +62,7 @@ function GamificationXBlock(runtime, element) {
       console.log("XBlock position: " + result['progress']);
       console.log("Last score: " + result['last_score']);
       console.log("Mean_score: " + result['mean_score']);
-      console.log(result["pipe"])
+      console.log(result["pipe"]);
 
     
       //--------------------------------------
@@ -95,7 +99,7 @@ function GamificationXBlock(runtime, element) {
         .then(gmJson => (element.innerHTML += gmJson.html, $(gmJson.html).appendTo(element)))
         .catch(error => console.log("Error: " + error));
     }
-    setup_data_updater(adaptative_mech_id, uname);
+    setup_data_updater(adaptative_mech_id, uname, nmURL);
     console.log("Success: GMechanic successfully loaded!");
   }
 
@@ -118,7 +122,6 @@ function GamificationXBlock(runtime, element) {
     need_log = result["need_log"];
     current_course_id = result["course_id"];
     console.log(current_course_id);
-
     var usage_id;
     try{ // OpenedX variable (Production)
       try{
@@ -149,22 +152,23 @@ function GamificationXBlock(runtime, element) {
     init_xblock_content();
   });
 
-  function setup_data_updater(mechanic_id, username){
+  function setup_data_updater(mechanic_id, username, nmURL){
     get_interaction_index(mechanic_id, username)
-    .then((iidx) => (post_mechanic_data(mechanic_id, username, iidx, true), iidx))
+    .then((iidx) => (post_mechanic_data(mechanic_id, username, iidx, true, nmURL), iidx))
     .then((iidx) => setInterval(function(){
       get_interaction_index(mechanic_id, username)
-      .then((iidx) => (post_mechanic_data(mechanic_id, username, iidx, true), post_profile_data(username))).catch(error => console.log("Error: " + error))}, 15000))
+      .then((iidx) => (post_mechanic_data(mechanic_id, username, iidx, true, nmURL), post_profile_data(username,nmURL)))
+      .catch(error => console.log("Error: " + error))}, 15000))
     .then(function(dump){
       window.onbeforeunload = function (e) {
         get_interaction_index(mechanic_id, username)
-        .then((iidx) => (post_mechanic_data(mechanic_id, username, iidx, false), post_profile_data(username))).catch(error => console.log("Error: " + error))
+        .then((iidx) => (post_mechanic_data(mechanic_id, username, iidx, false, nmURL), post_profile_data(username,nmURL))).catch(error => console.log("Error: " + error))
       };
     })
     .catch(error => console.log("Error: " + error))  
   }
 
-  function post_mechanic_data(mechanic_id, username, interaction_index, interacting) {
+  function post_mechanic_data(mechanic_id, username, interaction_index, interacting, nmURL) {
 
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "text/plain");
@@ -188,13 +192,13 @@ function GamificationXBlock(runtime, element) {
       redirect: 'follow'
     };
 
-    fetch("https://eqsriwyz93.execute-api.eu-west-1.amazonaws.com/dev/player", requestOptions)
+    fetch(nmURL + "/player", requestOptions)
       .then(response => response.json())
       .then(resJson => console.log(resJson))
       .catch(error => console.log("Error: " + error))
   }
 
-  function post_profile_data(username) {
+  function post_profile_data(username, nmURL) {
     get_player_profile(username)
     .then(function(gprofile){
       var myHeaders = new Headers();
@@ -220,7 +224,7 @@ function GamificationXBlock(runtime, element) {
         redirect: 'follow'
       };
 
-      fetch("https://eqsriwyz93.execute-api.eu-west-1.amazonaws.com/dev/player", requestOptions)
+      fetch(nmURL + "/player", requestOptions)
         .then(response => response.json())
         .then(resJson => console.log(resJson)) 
 

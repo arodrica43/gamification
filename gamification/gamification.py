@@ -8,6 +8,7 @@ from xblock.fields import Integer, Scope, String
 from django.contrib.auth.models import User
 from xmodule.modulestore.django import modulestore
 from xmodule.tabs import CourseTab
+from django.conf import settings
 
 class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 	"""
@@ -171,6 +172,8 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 						pass
 			except:
 				pass
+		endpoint = settings.NANOMOOCS.get('ENDPOINT')
+		stage = settings.NANOMOOCS.get('STAGE')
 		return {
 			"username" : User.objects.get(id = user_id).username,
 			"mech_id": self.gmechanic_id,
@@ -186,6 +189,8 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 			"tab_id" : tab_id,
 			"unit_id" : unit_id,
 			"last_activity_type" : previous_type,
+			"stage" : stage,
+			"endpoint" : endpoint,
 			"pipe" : "empty"
 			}
 
@@ -198,6 +203,8 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 		if self.adaptative_mode == "Static":
 			if self.adaptative_id != 0:
 				need_log = 0
+		endpoint = settings.NANOMOOCS.get('ENDPOINT')
+		stage = settings.NANOMOOCS.get('STAGE')
 
 		return {
 				"user_id" : user_id,
