@@ -96,19 +96,25 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 		return leafs
 
 
-
+	@XBlock.supports("multi_device")
 	def student_view(self, context=None):
-		try:
-			html =  self.resource_string("static/html/gamification.html")
+		in_studio_runtime = hasattr(self.xmodule_runtime, 'is_author_mode')
+        if not in_studio_runtime:
+			try:
+				html =  self.resource_string("static/html/gamification.html")
+				frag = Fragment(html.format(self=self))
+				frag.add_css(self.resource_string("static/css/gamification.css"))
+				frag.add_javascript(self.resource_string("static/js/src/gamification.js"))
+				frag.initialize_js('GamificationXBlock')
+				#lock.release()
+				return frag
+			except Exception as e:
+				#lock.release()
+				raise e
+		else:
+			html =  self.resource_string("static/html/studio_gamification.html")
 			frag = Fragment(html.format(self=self))
-			frag.add_css(self.resource_string("static/css/gamification.css"))
-			frag.add_javascript(self.resource_string("static/js/src/gamification.js"))
-			frag.initialize_js('GamificationXBlock')
-			#lock.release()
 			return frag
-		except Exception as e:
-			#lock.release()
-			raise e
 
 	@XBlock.json_handler
 	def set_xblock_content(self, data, suffix=''):
