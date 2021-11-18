@@ -118,6 +118,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 		v2 = 'Oh no'
 		e1 = 'Oh no'
 		e2 = 'Oh no'
+		e3 = 'Oh no'
 		try:
 			source = self.get_source()
 			leafs = self.get_leafs(source)
@@ -129,13 +130,13 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 			progress = (1.0 + index)/len(leafs)
 			if index > 0:
 				previous_type = str(leafs[index - 1].scope_ids.block_type)
-				
+				e3 = str(leafs[index - 1])
 				try: 
 					v1 = leafs[index - 1].get_score()
 				except Exception as err:
 					e1 = err
 				try: 
-					v1 = leafs[index - 1].has_submitted_answer()
+					v2 = leafs[index - 1].has_submitted_answer()
 				except Exception as err:
 					e2 = err
 
@@ -211,6 +212,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 			"p2" : str(v2),
 			"p3" : str(e1),
 			"p4" : str(e2),
+			"p5" : e3
 			}
 
 	@XBlock.json_handler
