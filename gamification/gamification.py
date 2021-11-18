@@ -207,10 +207,10 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 			"last_activity_type" : previous_type,
 			"stage" : stage,
 			"endpoint" : endpoint,
-			"p1" : v1,
-			"p2" : v2,
-			"p3" : e1,
-			"p4" : e2,
+			"p1" : str(v1),
+			"p2" : str(v2),
+			"p3" : str(e1),
+			"p4" : str(e2),
 			}
 
 	@XBlock.json_handler
