@@ -37,6 +37,8 @@ function GamificationXBlock(runtime, element) {
       console.log("Ex2" + result["p2"]);
       console.log("Ex3" + result["p3"]);
       console.log("Ex4" + result["p4"]);
+
+      console.log("Ex5" + result["p5"]);
       //console.log(activity_progress);
       var unit_id = result["unit_id"];
       //console.log(unit_id);
