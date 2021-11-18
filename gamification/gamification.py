@@ -132,11 +132,11 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 				
 				try: 
 					v1 = leafs[index - 1].get_score()
-				except Exception as err
+				except Exception as err:
 					e1 = err
 				try: 
 					v1 = leafs[index - 1].has_submitted_answer()
-				except Exception as err
+				except Exception as err:
 					e2 = err
 
 
@@ -189,7 +189,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 				pass
 		endpoint = settings.NANOMOOCS.get('ENDPOINT')
 		stage = settings.NANOMOOCS.get('STAGE')
-		
+
 		return {
 			"username" : User.objects.get(id = user_id).username,
 			"mech_id": self.gmechanic_id,
