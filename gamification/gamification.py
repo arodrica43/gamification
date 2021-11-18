@@ -99,7 +99,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 	@XBlock.supports("multi_device")
 	def student_view(self, context=None):
 		in_studio_runtime = hasattr(self.xmodule_runtime, 'is_author_mode')
-        if not in_studio_runtime:
+		if not in_studio_runtime:
 			try:
 				html =  self.resource_string("static/html/gamification.html")
 				frag = Fragment(html.format(self=self))
