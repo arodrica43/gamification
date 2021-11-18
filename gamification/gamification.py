@@ -114,10 +114,10 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 	def set_xblock_content(self, data, suffix=''):
 		user_id = self.xmodule_runtime.user_id
 		unit_id = str(self.runtime.get_block(self.parent).scope_ids.usage_id)
-		v1 = None
-		v2 = None
-		e1 = None
-		e2 = None
+		v1 = 'Oh no'
+		v2 = 'Oh no'
+		e1 = 'Oh no'
+		e2 = 'Oh no'
 		try:
 			source = self.get_source()
 			leafs = self.get_leafs(source)
@@ -207,7 +207,10 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 			"last_activity_type" : previous_type,
 			"stage" : stage,
 			"endpoint" : endpoint,
-			"pipe" : [v1,v2,e1,e2]
+			"p1" : v1,
+			"p2" : v2,
+			"p3" : e1,
+			"p4" : e2,
 			}
 
 	@XBlock.json_handler
