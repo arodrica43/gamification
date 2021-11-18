@@ -114,11 +114,6 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 	def set_xblock_content(self, data, suffix=''):
 		user_id = self.xmodule_runtime.user_id
 		unit_id = str(self.runtime.get_block(self.parent).scope_ids.usage_id)
-		v1 = 'Oh no'
-		v2 = 'Oh no'
-		e1 = 'Oh no'
-		e2 = 'Oh no'
-		e3 = 'Oh no'
 		try:
 			source = self.get_source()
 			leafs = self.get_leafs(source)
@@ -130,17 +125,6 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 			progress = (1.0 + index)/len(leafs)
 			if index > 0:
 				previous_type = str(leafs[index - 1].scope_ids.block_type)
-				e3 = str(leafs[index - 1])
-				try: 
-					v1 = leafs[index - 1].get_score()
-				except Exception as err:
-					e1 = err
-				try: 
-					v2 = leafs[index - 1].has_submitted_answer()
-				except Exception as err:
-					e2 = err
-
-
 		except:
 			index = None
 			progress = "Err"
@@ -190,7 +174,6 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 				pass
 		endpoint = settings.NANOMOOCS.get('ENDPOINT')
 		stage = settings.NANOMOOCS.get('STAGE')
-
 		return {
 			"username" : User.objects.get(id = user_id).username,
 			"mech_id": self.gmechanic_id,
@@ -208,11 +191,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 			"last_activity_type" : previous_type,
 			"stage" : stage,
 			"endpoint" : endpoint,
-			"p1" : str(v1),
-			"p2" : str(v2),
-			"p3" : str(e1),
-			"p4" : str(e2),
-			"p5" : e3
+			"pipe" : "empty"
 			}
 
 	@XBlock.json_handler
