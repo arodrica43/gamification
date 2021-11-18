@@ -114,6 +114,10 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 	def set_xblock_content(self, data, suffix=''):
 		user_id = self.xmodule_runtime.user_id
 		unit_id = str(self.runtime.get_block(self.parent).scope_ids.usage_id)
+		v1 = None
+		v2 = None
+		e1 = None
+		e2 = None
 		try:
 			source = self.get_source()
 			leafs = self.get_leafs(source)
@@ -125,6 +129,17 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 			progress = (1.0 + index)/len(leafs)
 			if index > 0:
 				previous_type = str(leafs[index - 1].scope_ids.block_type)
+				
+				try: 
+					v1 = leafs[index - 1].get_score()
+				except Exception as err
+					e1 = err
+				try: 
+					v1 = leafs[index - 1].has_submitted_answer()
+				except Exception as err
+					e2 = err
+
+
 		except:
 			index = None
 			progress = "Err"
@@ -174,6 +189,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 				pass
 		endpoint = settings.NANOMOOCS.get('ENDPOINT')
 		stage = settings.NANOMOOCS.get('STAGE')
+		
 		return {
 			"username" : User.objects.get(id = user_id).username,
 			"mech_id": self.gmechanic_id,
@@ -191,7 +207,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 			"last_activity_type" : previous_type,
 			"stage" : stage,
 			"endpoint" : endpoint,
-			"pipe" : "empty"
+			"pipe" : [v1,v2,e1,e2]
 			}
 
 	@XBlock.json_handler

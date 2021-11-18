@@ -32,7 +32,7 @@ function GamificationXBlock(runtime, element) {
       var last_score = result["last_score"];
       //console.log(result["mean_score"]);
       var activity_progress = result["activity_progress"];
-      //console.log("pipe :: " + result["pipe"]);
+      console.log("pipe :: " + result["pipe"]);
       //console.log(activity_progress);
       var unit_id = result["unit_id"];
       //console.log(unit_id);
