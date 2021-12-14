@@ -154,21 +154,21 @@ function GamificationXBlock(runtime, element) {
 
   function setup_data_updater(mechanic_id, username, nmURL){
     get_interaction_index(mechanic_id, username)
-    .then((iidx) => (post_mechanic_data(mechanic_id, username, iidx, true, nmURL), iidx))
+    .then((iidx) => (post_mechanic_data(mechanic_id, username, iidx[0], iidx[1], true, nmURL), iidx))
     .then((iidx) => setInterval(function(){
       get_interaction_index(mechanic_id, username)
-      .then((iidx) => (post_mechanic_data(mechanic_id, username, iidx, true, nmURL), post_profile_data(username,nmURL)))
+      .then((iidx) => (post_mechanic_data(mechanic_id, username, iidx[0], iidx[1], true, nmURL), post_profile_data(username,nmURL)))
       .catch(error => console.log("Error: " + error))}, 15000))
     .then(function(dump){
       window.onbeforeunload = function (e) {
         get_interaction_index(mechanic_id, username)
-        .then((iidx) => (post_mechanic_data(mechanic_id, username, iidx, false, nmURL), post_profile_data(username,nmURL))).catch(error => console.log("Error: " + error))
+        .then((iidx) => (post_mechanic_data(mechanic_id, username, iidx[0], iidx[1], false, nmURL), post_profile_data(username,nmURL))).catch(error => console.log("Error: " + error))
       };
     })
     .catch(error => console.log("Error: " + error))  
   }
 
-  function post_mechanic_data(mechanic_id, username, interaction_index, interacting, nmURL) {
+  function post_mechanic_data(mechanic_id, username, interaction_index, gmtype, interacting, nmURL) {
 
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "text/plain");
@@ -192,7 +192,26 @@ function GamificationXBlock(runtime, element) {
       redirect: 'follow'
     };
 
+    var raw_an = JSON.stringify({
+          "user" : username,
+          "timestamp" : Date.now(),
+          "service" : "GAM_OUTCOME",
+          "resource" : course_id,
+          "result" : gmtype
+      });
+
+    var an_requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw_an,
+      redirect: 'follow'
+    };
+
     fetch(nmURL + "/player", requestOptions)
+      .then(response => response.json())
+      .then(resJson => console.log(resJson))
+      .catch(error => console.log("Error: " + error))
+    fetch(nmURL + "/analytics", an_requestOptions)
       .then(response => response.json())
       .then(resJson => console.log(resJson))
       .catch(error => console.log("Error: " + error))
@@ -224,9 +243,34 @@ function GamificationXBlock(runtime, element) {
         redirect: 'follow'
       };
 
+      var raw_an = JSON.stringify({
+          "user" : username,
+          "timestamp" : Date.now(),
+          "service" : "GAM_UPDATE_PROFILE",
+          "resource" : course_id,
+          "result" : [gprofile.disruptor,
+                      gprofile.free_spirit,
+                      gprofile.achiever,
+                      gprofile.player,
+                      gprofile.socializer,
+                      gprofile.philantropist,
+                      gprofile.no_player]
+      });
+
+      var an_requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw_an,
+        redirect: 'follow'
+      };
+
       fetch(nmURL + "/player", requestOptions)
         .then(response => response.json())
         .then(resJson => console.log(resJson)) 
+
+      fetch(nmURL + "/analytics", an_requestOptions)
+        .then(response => response.json())
+        .then(resJson => console.log(resJson))
 
     })
     .catch(error => console.log("Error: " + error))
@@ -238,7 +282,7 @@ function GamificationXBlock(runtime, element) {
     console.log("Mechanic ID :: " + mechanic_id)
     return fetch("https://agmodule.herokuapp.com/api/statistics/get_interaction_index/" + username + "/" + mechanic_id)  // return this promise
           .then(response => response.json())
-          .then(statJson => statJson.interaction_index)
+          .then(statJson => [statJson.interaction_index, statJson.gmtype])
   }
 
   function get_player_profile(username) {
