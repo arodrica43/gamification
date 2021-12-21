@@ -194,7 +194,7 @@ function GamificationXBlock(runtime, element) {
 
     var raw_an = JSON.stringify({
           "user" : username,
-          "timestamp" : Date.now(),
+          "timestamp" : (new Date(Date.now())).toISOString(),
           "service" : "GAM_OUTCOME",
           "resource" : course_id,
           "result" : gmtype
@@ -245,7 +245,7 @@ function GamificationXBlock(runtime, element) {
 
       var raw_an = JSON.stringify({
           "user" : username,
-          "timestamp" : Date.now(),
+          "timestamp" : (new Date(Date.now())).toISOString(),
           "service" : "GAM_UPDATE_PROFILE",
           "resource" : course_id,
           "result" : [gprofile.disruptor,
