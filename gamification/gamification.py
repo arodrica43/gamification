@@ -182,6 +182,7 @@ class GamificationXBlock(StudioEditableXBlockMixin, XBlock):
 		stage = settings.NANOMOOCS.get('STAGE')
 		return {
 			"username" : User.objects.get(id = user_id).username,
+			"user_id" : str(User.objects.get(id = user_id).id),
 			"mech_id": self.gmechanic_id,
 			"mech_type" : self.gmechanic_type, 
 			"mech_size": self.gmechanic_size, 

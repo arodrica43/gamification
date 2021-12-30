@@ -40,6 +40,9 @@ function GamificationXBlock(runtime, element) {
       console.log("Last activity type");
       console.log(last_activity_type);
 
+      user_id = result["user_id"];
+      console.log("UID " + result["user_id"]);
+
       stage = result['stage'];
       endpoint = result['endpoint'];
       nmURL = endpoint + "/" + stage;
@@ -99,7 +102,7 @@ function GamificationXBlock(runtime, element) {
         .then(gmJson => (element.innerHTML += gmJson.html, $(gmJson.html).appendTo(element)))
         .catch(error => console.log("Error: " + error));
     }
-    setup_data_updater(adaptative_mech_id, uname, nmURL);
+    setup_data_updater(adaptative_mech_id, uname, user_id, nmURL);
     console.log("Success: GMechanic successfully loaded!");
   }
 
@@ -152,23 +155,23 @@ function GamificationXBlock(runtime, element) {
     init_xblock_content();
   });
 
-  function setup_data_updater(mechanic_id, username, nmURL){
+  function setup_data_updater(mechanic_id, username, user_id, nmURL){
     get_interaction_index(mechanic_id, username)
-    .then((iidx) => (post_mechanic_data(mechanic_id, username, iidx[0], iidx[1], true, nmURL), iidx))
+    .then((iidx) => (post_mechanic_data(mechanic_id, username, user_id, iidx[0], iidx[1], true, nmURL), iidx))
     .then((iidx) => setInterval(function(){
       get_interaction_index(mechanic_id, username)
-      .then((iidx) => (post_mechanic_data(mechanic_id, username, iidx[0], iidx[1], true, nmURL), post_profile_data(username,nmURL)))
+      .then((iidx) => (post_mechanic_data(mechanic_id, username, user_id, iidx[0], iidx[1], true, nmURL), post_profile_data(username, user_id, nmURL)))
       .catch(error => console.log("Error: " + error))}, 15000))
     .then(function(dump){
       window.onbeforeunload = function (e) {
         get_interaction_index(mechanic_id, username)
-        .then((iidx) => (post_mechanic_data(mechanic_id, username, iidx[0], iidx[1], false, nmURL), post_profile_data(username,nmURL))).catch(error => console.log("Error: " + error))
+        .then((iidx) => (post_mechanic_data(mechanic_id, username, user_id, iidx[0], iidx[1], false, nmURL), post_profile_data(username, user_id, nmURL))).catch(error => console.log("Error: " + error))
       };
     })
     .catch(error => console.log("Error: " + error))  
   }
 
-  function post_mechanic_data(mechanic_id, username, interaction_index, gmtype, interacting, nmURL) {
+  function post_mechanic_data(mechanic_id, username, user_id,interaction_index, gmtype, interacting, nmURL) {
 
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "text/plain");
@@ -193,7 +196,7 @@ function GamificationXBlock(runtime, element) {
     };
 
     var raw_an = JSON.stringify({
-          "user" : username,
+          "user" : user_id,
           "timestamp" : (new Date(Date.now())).toISOString(),
           "service" : "GAM_OUTCOME",
           "resource" : course_id,
@@ -217,7 +220,7 @@ function GamificationXBlock(runtime, element) {
       .catch(error => console.log("Error: " + error))
   }
 
-  function post_profile_data(username, nmURL) {
+  function post_profile_data(username, user_id, nmURL) {
     get_player_profile(username)
     .then(function(gprofile){
       var myHeaders = new Headers();
@@ -244,7 +247,7 @@ function GamificationXBlock(runtime, element) {
       };
 
       var raw_an = JSON.stringify({
-          "user" : username,
+          "user" : user_id,
           "timestamp" : (new Date(Date.now())).toISOString(),
           "service" : "GAM_UPDATE_PROFILE",
           "resource" : course_id,
