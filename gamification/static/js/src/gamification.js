@@ -196,7 +196,7 @@ function GamificationXBlock(runtime, element) {
     };
 
     var raw_an = JSON.stringify({
-          "user" : user_id,
+          "user" : parseInt(user_id),
           "timestamp" : (new Date(Date.now())).toISOString(),
           "service" : "GAM_OUTCOME",
           "resource" : course_id,
@@ -247,7 +247,7 @@ function GamificationXBlock(runtime, element) {
       };
 
       var raw_an = JSON.stringify({
-          "user" : user_id,
+          "user" : parseInt(user_id),
           "timestamp" : (new Date(Date.now())).toISOString(),
           "service" : "GAM_UPDATE_PROFILE",
           "resource" : course_id,
