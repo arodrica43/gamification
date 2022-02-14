@@ -108,6 +108,139 @@ function GamificationXBlock(runtime, element) {
     }
     setup_data_updater(adaptative_mech_id, uname, user_id, nmURL);
     console.log("Success: GMechanic successfully loaded!");
+    
+      function setup_data_updater(mechanic_id, username, user_id, nmURL){
+      get_interaction_index(mechanic_id, username)
+      .then((iidx) => (post_mechanic_data(mechanic_id, username, user_id, iidx[0], iidx[1], true, nmURL), iidx))
+      .then((iidx) => setInterval(function(){
+        get_interaction_index(mechanic_id, username)
+        .then((iidx) => (post_mechanic_data(mechanic_id, username, user_id, iidx[0], iidx[1], true, nmURL), post_profile_data(username, user_id, nmURL)))
+        .catch(error => console.log("Error: " + error))}, 15000))
+      .then(function(dump){
+        window.onbeforeunload = function (e) {
+          get_interaction_index(mechanic_id, username)
+          .then((iidx) => (post_mechanic_data(mechanic_id, username, user_id, iidx[0], iidx[1], false, nmURL), post_profile_data(username, user_id, nmURL))).catch(error => console.log("Error: " + error))
+        };
+      })
+      .catch(error => console.log("Error: " + error))  
+    }
+
+    function post_mechanic_data(mechanic_id, username, user_id,interaction_index, gmtype, interacting, nmURL) {
+
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "text/plain");
+
+      var raw = JSON.stringify({
+            "id": username,
+            "interactions": [
+                {
+                    "mechanic_id": mechanic_id,
+                    "index": interaction_index,
+                    "interacting": interacting
+                }
+            ],
+            "next_mechanic_id" : mechanic_id
+        });
+
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+      };
+
+      var raw_an = JSON.stringify({
+            "user" : parseInt(user_id),
+            "timestamp" : (new Date(Date.now())).toISOString(),
+            "service" : "GAM_OUTCOME",
+            "resource" : {
+              "course" : course_id,
+              "unit" : unit_id,
+              "xblock" : block_id 
+            },
+            "result" : gmtype
+        });
+
+      var an_requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw_an,
+        redirect: 'follow'
+      };
+
+      fetch(nmURL + "/player", requestOptions)
+        .then(response => response.json())
+        .then(resJson => console.log(resJson))
+        .catch(error => console.log("Error: " + error))
+      fetch(nmURL + "/analytics", an_requestOptions)
+        .then(response => response.json())
+        .then(resJson => console.log(resJson))
+        .catch(error => console.log("Error: " + error))
+    }
+
+    function post_profile_data(username, user_id, nmURL) {
+      get_player_profile(username)
+      .then(function(gprofile){
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "text/plain");
+
+        var raw = JSON.stringify({
+          "id": username,
+          "gamer_profile": {
+            "disruptor": gprofile.disruptor,
+            "free_spirit": gprofile.free_spirit,
+            "achiever": gprofile.achiever,
+            "player": gprofile.player,
+            "socializer": gprofile.socializer,
+            "philantropist": gprofile.philantropist,
+            "no_player": gprofile.no_player
+          }
+        });
+
+        var requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          body: raw,
+          redirect: 'follow'
+        };
+
+        var raw_an = JSON.stringify({
+            "user" : parseInt(user_id),
+            "timestamp" : (new Date(Date.now())).toISOString(),
+            "service" : "GAM_UPDATE_PROFILE",
+            "resource" : {
+              "course" : course_id,
+              "unit" : unit_id,
+              "xblock" : block_id 
+            },
+            "result" : [gprofile.disruptor,
+                        gprofile.free_spirit,
+                        gprofile.achiever,
+                        gprofile.player,
+                        gprofile.socializer,
+                        gprofile.philantropist,
+                        gprofile.no_player]
+        });
+
+        var an_requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          body: raw_an,
+          redirect: 'follow'
+        };
+
+        fetch(nmURL + "/player", requestOptions)
+          .then(response => response.json())
+          .then(resJson => console.log(resJson)) 
+
+        fetch(nmURL + "/analytics", an_requestOptions)
+          .then(response => response.json())
+          .then(resJson => console.log(resJson))
+
+      })
+      .catch(error => console.log("Error: " + error))
+      
+    }
   }
 
   var handlerUrl = runtime.handlerUrl(element, 'set_xblock_content');
@@ -159,138 +292,7 @@ function GamificationXBlock(runtime, element) {
     init_xblock_content();
   });
 
-  function setup_data_updater(mechanic_id, username, user_id, nmURL){
-    get_interaction_index(mechanic_id, username)
-    .then((iidx) => (post_mechanic_data(mechanic_id, username, user_id, iidx[0], iidx[1], true, nmURL), iidx))
-    .then((iidx) => setInterval(function(){
-      get_interaction_index(mechanic_id, username)
-      .then((iidx) => (post_mechanic_data(mechanic_id, username, user_id, iidx[0], iidx[1], true, nmURL), post_profile_data(username, user_id, nmURL)))
-      .catch(error => console.log("Error: " + error))}, 15000))
-    .then(function(dump){
-      window.onbeforeunload = function (e) {
-        get_interaction_index(mechanic_id, username)
-        .then((iidx) => (post_mechanic_data(mechanic_id, username, user_id, iidx[0], iidx[1], false, nmURL), post_profile_data(username, user_id, nmURL))).catch(error => console.log("Error: " + error))
-      };
-    })
-    .catch(error => console.log("Error: " + error))  
-  }
-
-  function post_mechanic_data(mechanic_id, username, user_id,interaction_index, gmtype, interacting, nmURL) {
-
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "text/plain");
-
-    var raw = JSON.stringify({
-          "id": username,
-          "interactions": [
-              {
-                  "mechanic_id": mechanic_id,
-                  "index": interaction_index,
-                  "interacting": interacting
-              }
-          ],
-          "next_mechanic_id" : mechanic_id
-      });
-
-    var requestOptions = {
-      method: 'POST',
-      headers: myHeaders,
-      body: raw,
-      redirect: 'follow'
-    };
-
-    var raw_an = JSON.stringify({
-          "user" : parseInt(user_id),
-          "timestamp" : (new Date(Date.now())).toISOString(),
-          "service" : "GAM_OUTCOME",
-          "resource" : {
-            "course" : course_id,
-            "unit" : unit_id,
-            "xblock" : block_id 
-          },
-          "result" : gmtype
-      });
-
-    var an_requestOptions = {
-      method: 'POST',
-      headers: myHeaders,
-      body: raw_an,
-      redirect: 'follow'
-    };
-
-    fetch(nmURL + "/player", requestOptions)
-      .then(response => response.json())
-      .then(resJson => console.log(resJson))
-      .catch(error => console.log("Error: " + error))
-    fetch(nmURL + "/analytics", an_requestOptions)
-      .then(response => response.json())
-      .then(resJson => console.log(resJson))
-      .catch(error => console.log("Error: " + error))
-  }
-
-  function post_profile_data(username, user_id, nmURL) {
-    get_player_profile(username)
-    .then(function(gprofile){
-      var myHeaders = new Headers();
-      myHeaders.append("Content-Type", "text/plain");
-
-      var raw = JSON.stringify({
-        "id": username,
-        "gamer_profile": {
-          "disruptor": gprofile.disruptor,
-          "free_spirit": gprofile.free_spirit,
-          "achiever": gprofile.achiever,
-          "player": gprofile.player,
-          "socializer": gprofile.socializer,
-          "philantropist": gprofile.philantropist,
-          "no_player": gprofile.no_player
-        }
-      });
-
-      var requestOptions = {
-        method: 'POST',
-        headers: myHeaders,
-        body: raw,
-        redirect: 'follow'
-      };
-
-      var raw_an = JSON.stringify({
-          "user" : parseInt(user_id),
-          "timestamp" : (new Date(Date.now())).toISOString(),
-          "service" : "GAM_UPDATE_PROFILE",
-          "resource" : {
-            "course" : course_id,
-            "unit" : unit_id,
-            "xblock" : block_id 
-          },
-          "result" : [gprofile.disruptor,
-                      gprofile.free_spirit,
-                      gprofile.achiever,
-                      gprofile.player,
-                      gprofile.socializer,
-                      gprofile.philantropist,
-                      gprofile.no_player]
-      });
-
-      var an_requestOptions = {
-        method: 'POST',
-        headers: myHeaders,
-        body: raw_an,
-        redirect: 'follow'
-      };
-
-      fetch(nmURL + "/player", requestOptions)
-        .then(response => response.json())
-        .then(resJson => console.log(resJson)) 
-
-      fetch(nmURL + "/analytics", an_requestOptions)
-        .then(response => response.json())
-        .then(resJson => console.log(resJson))
-
-    })
-    .catch(error => console.log("Error: " + error))
-    
-  }
+  
 
   function get_interaction_index(mechanic_id, username) {
     console.log("get_interaction_index executed");
