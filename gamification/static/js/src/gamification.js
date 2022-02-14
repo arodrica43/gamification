@@ -206,7 +206,7 @@ function GamificationXBlock(runtime, element) {
           "resource" : {
             "course" : course_id,
             "unit" : unit_id,
-            "xblock" block_id 
+            "xblock" : block_id 
           },
           "result" : gmtype
       });
@@ -218,10 +218,10 @@ function GamificationXBlock(runtime, element) {
       redirect: 'follow'
     };
 
-    // fetch(nmURL + "/player", requestOptions)
-    //   .then(response => response.json())
-    //   .then(resJson => console.log(resJson))
-    //   .catch(error => console.log("Error: " + error))
+    fetch(nmURL + "/player", requestOptions)
+      .then(response => response.json())
+      .then(resJson => console.log(resJson))
+      .catch(error => console.log("Error: " + error))
     fetch(nmURL + "/analytics", an_requestOptions)
       .then(response => response.json())
       .then(resJson => console.log(resJson))
@@ -261,7 +261,7 @@ function GamificationXBlock(runtime, element) {
           "resource" : {
             "course" : course_id,
             "unit" : unit_id,
-            "xblock" block_id 
+            "xblock" : block_id 
           },
           "result" : [gprofile.disruptor,
                       gprofile.free_spirit,
@@ -279,9 +279,9 @@ function GamificationXBlock(runtime, element) {
         redirect: 'follow'
       };
 
-      // fetch(nmURL + "/player", requestOptions)
-      //   .then(response => response.json())
-      //   .then(resJson => console.log(resJson)) 
+      fetch(nmURL + "/player", requestOptions)
+        .then(response => response.json())
+        .then(resJson => console.log(resJson)) 
 
       fetch(nmURL + "/analytics", an_requestOptions)
         .then(response => response.json())
