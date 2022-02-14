@@ -48,13 +48,17 @@ function GamificationXBlock(runtime, element) {
       nmURL = endpoint + "/" + stage;
 
       var usage_id;
+      var block_id;
       try{ // OpenedX variable (Production)
         try{
+          block_id =element.dataset.usageId;
           usage_id = element.dataset.usageId.replace(/[\s\.\&\:\+\@]/g, "");
         }catch{
-           usage_id = element["0"].dataset.usageId.replace(/[\s\.\&\:\+\@]/g, "");
+          block_id = element["0"].dataset.usageId;
+          usage_id = element["0"].dataset.usageId.replace(/[\s\.\&\:\+\@]/g, "");
         }
       } catch { // XBLock SDK variable (Development)
+        block_id = element.dataset.usage;
         usage_id = element.dataset.usage.replace(/[\s\.\&\:\+\@]/g, "");
       }
 
@@ -199,7 +203,11 @@ function GamificationXBlock(runtime, element) {
           "user" : parseInt(user_id),
           "timestamp" : (new Date(Date.now())).toISOString(),
           "service" : "GAM_OUTCOME",
-          "resource" : course_id,
+          "resource" : {
+            "course" : course_id,
+            "unit" : unit_id,
+            "xblock" block_id 
+          },
           "result" : gmtype
       });
 
@@ -250,7 +258,11 @@ function GamificationXBlock(runtime, element) {
           "user" : parseInt(user_id),
           "timestamp" : (new Date(Date.now())).toISOString(),
           "service" : "GAM_UPDATE_PROFILE",
-          "resource" : course_id,
+          "resource" : {
+            "course" : course_id,
+            "unit" : unit_id,
+            "xblock" block_id 
+          },
           "result" : [gprofile.disruptor,
                       gprofile.free_spirit,
                       gprofile.achiever,
