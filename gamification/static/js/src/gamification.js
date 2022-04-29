@@ -1,7 +1,7 @@
 /* Javascript for GamificationXBlock. */
 function GamificationXBlock(runtime, element) {
 
-    element.innerHTML += "<div id='waiting-back'><img src='https://i.pinimg.com/originals/23/35/32/23353292cc60b2bcb3f015ee362eeb74.gif' width=250/></div>";
+    element.innerHTML += "<div id='waiting-back' style='text-align:center;'><img src='https://i.pinimg.com/originals/23/35/32/23353292cc60b2bcb3f015ee362eeb74.gif' width=250/></div>";
     var uname;
     var associations = [
                         ["Adaptative", "Badge", "Challenge", "DevelopmentTool", "EasterEgg", "Gift", "GiftOpener", "KnowledgeShare", "Level", "Lottery", "Point", "SocialNetwork", "SocialStatus", "Unlockable", "Leaderboard"],
