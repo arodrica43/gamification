@@ -79,7 +79,7 @@ function GamificationXBlock(runtime, element) {
           console.log("https://agmodule.herokuapp.com/api/g_mechanics/" + adaptative_mech_id + "/?user=" + uname + "&dynamic_index=" + usage_id + "&course_id=" + course_id + "&dynamic_progress=" + progress + "&activity_progress=" + activity_progress + "&mean_score=" + mean_score + "&last_score=" + last_score + "&last_activity_type=" + last_activity_type + "&unit_id=" + unit_id  + "&dynamic_link_url=" + dashboard_url);
           fetch("https://agmodule.herokuapp.com/api/g_mechanics/" + adaptative_mech_id + "/?user=" + uname + "&dynamic_index=" + usage_id + "&course_id=" + course_id + "&dynamic_progress=" + progress + "&activity_progress=" + activity_progress + "&mean_score=" + mean_score + "&last_score=" + last_score + "&last_activity_type=" + last_activity_type + "&unit_id=" + unit_id  + "&dynamic_link_url=" + dashboard_url) //&dynamic_index={self.scope_ids.def_id} 
           .then(response => response.json())
-          .then(gmJson => (element.getElementById("waiting-back").innerHTML = "", element.innerHTML += gmJson.html, $(gmJson.html).appendTo(element)))
+          .then(gmJson => (document.getElementById("waiting-back").innerHTML = "", element.innerHTML += gmJson.html, $(gmJson.html).appendTo(element)))
           .catch(error => console.log("Error: " + error))
         }else{ // No Adaptative widget = Plain Mechanic
           var gmech = "";
@@ -97,14 +97,14 @@ function GamificationXBlock(runtime, element) {
                     ids_list))
           .then(ids_list => ( fetch("https://agmodule.herokuapp.com/api/g_mechanics/" + ids_list[Math.floor(Math.random() * ids_list.length)] + "/?user=" + uname + "&dynamic_index=" + usage_id + "&course_id=" + course_id + "&dynamic_progress=" + progress + "&activity_progress=" + activity_progress + "&mean_score=" + mean_score + "&last_score=" + last_score + "&last_activity_type=" + last_activity_type + "&unit_id=" + unit_id  + "&dynamic_link_url=" + dashboard_url) //&dynamic_index={self.scope_ids.def_id} 
                     .then(response => response.json())
-                    .then(gmJson => (element.getElementById("waiting-back").innerHTML = "", element.innerHTML += gmJson.html, $(gmJson.html).appendTo(element))) // first you can do $('#main-embedded-content', element)[0].innerHTML = gmJson.html, 
+                    .then(gmJson => (document.getElementById("waiting-back").innerHTML = "", element.innerHTML += gmJson.html, $(gmJson.html).appendTo(element))) // first you can do $('#main-embedded-content', element)[0].innerHTML = gmJson.html, 
                     .catch(error => console.log("Error: " + error))))
           .catch(error => console.log("Error: " + error))    
         }
       }else{
         fetch("https://agmodule.herokuapp.com/api/g_mechanics/" + mech_id + "/?user=" + uname + "&dynamic_index=" + usage_id + "&course_id=" + course_id) //&dynamic_index={self.scope_ids.def_id} 
         .then(response => response.json())
-        .then(gmJson => (element.getElementById("waiting-back").innerHTML = "", element.innerHTML += gmJson.html, $(gmJson.html).appendTo(element)))
+        .then(gmJson => (document.getElementById("waiting-back").innerHTML = "", element.innerHTML += gmJson.html, $(gmJson.html).appendTo(element)))
         .catch(error => console.log("Error: " + error));
     }
     setup_data_updater(adaptative_mech_id, uname, user_id, nmURL);
